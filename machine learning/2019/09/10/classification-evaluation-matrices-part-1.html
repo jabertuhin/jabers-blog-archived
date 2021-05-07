@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>ক্লাসিফিকেশন ইভ্যালুয়েশন মেট্রিসেস(Classification evaluation matrices) [পর্ব - ১] | Jaber’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="ক্লাসিফিকেশন ইভ্যালুয়েশন মেট্রিসেস(Classification evaluation matrices) [পর্ব - ১]" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Classification evaluation matrices, part-1" />
+<meta property="og:description" content="Classification evaluation matrices, part-1" />
+<link rel="canonical" href="https://jabertuhin.github.io/jabers-blog/machine%20learning/2019/09/10/classification-evaluation-matrices-part-1.html" />
+<meta property="og:url" content="https://jabertuhin.github.io/jabers-blog/machine%20learning/2019/09/10/classification-evaluation-matrices-part-1.html" />
+<meta property="og:site_name" content="Jaber’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-09-10T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://jabertuhin.github.io/jabers-blog/machine%20learning/2019/09/10/classification-evaluation-matrices-part-1.html","@type":"BlogPosting","headline":"ক্লাসিফিকেশন ইভ্যালুয়েশন মেট্রিসেস(Classification evaluation matrices) [পর্ব - ১]","dateModified":"2019-09-10T00:00:00-05:00","datePublished":"2019-09-10T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://jabertuhin.github.io/jabers-blog/machine%20learning/2019/09/10/classification-evaluation-matrices-part-1.html"},"description":"Classification evaluation matrices, part-1","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/jabers-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://jabertuhin.github.io/jabers-blog/feed.xml" title="Jaber's Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-170132741-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-170132741-2');
+</script>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/jabers-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/jabers-blog/">Jaber&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/jabers-blog/about/">About Me</a><a class="page-link" href="/jabers-blog/search/">Search</a><a class="page-link" href="/jabers-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">ক্লাসিফিকেশন ইভ্যালুয়েশন মেট্রিসেস(Classification evaluation matrices) [পর্ব - ১]</h1><p class="page-description">Classification evaluation matrices, part-1</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2019-09-10T00:00:00-05:00" itemprop="datePublished">
+        Sep 10, 2019
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      4 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#Machine Learning">Machine Learning</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h3"><a href="#ক্লাসিফিকেশন-একুরেসিclassification-accuracy">ক্লাসিফিকেশন একুরেসি(Classification Accuracy)</a></li>
+<li class="toc-entry toc-h3"><a href="#কনফিউশন-মেট্রিক্সconfusion-matrix">কনফিউশন মেট্রিক্স(Confusion Matrix)</a></li>
+<li class="toc-entry toc-h3"><a href="#প্রেসিশনprecision">প্রেসিশন(Precision)</a></li>
+<li class="toc-entry toc-h3"><a href="#রিকলrecall">রিকল(Recall)</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#update-1-on-september-14th">Update-1 on September 14th</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#এফ-ওয়ান-স্কোরf1-score">এফ ওয়ান স্কোর(F1 Score)</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#resources">Resources</a></li>
+</ul>
+</li>
+</ul><p>আমরা মেশিন লার্নিং এর বিভিন্ন এল্গোরিদম ব্যবহার করে, বিভিন্ন ধরনের সমস্যা সমাধানের চেষ্টা করি। তার মধ্যে ক্লাসিফিকেশন নিয়ে সম্ভবত আমরা সবচেয়ে বেশি কাজ করে থাকি। কিভাবে এই এল্গোরিদমগুলোকে মূল্যায়ন করা যায় তার কিছু পদ্ধতি দেখে নিবো। নতুবা বুঝবো কিভাবে কোন নির্দিষ্ট কাজের জন্য আমার কোন এল্গোরিদম ব্যবহার করা উচিত?</p>
+
+<h3 id="ক্লাসিফিকেশন-একুরেসিclassification-accuracy">
+<a class="anchor" href="#%E0%A6%95%E0%A7%8D%E0%A6%B2%E0%A6%BE%E0%A6%B8%E0%A6%BF%E0%A6%AB%E0%A6%BF%E0%A6%95%E0%A7%87%E0%A6%B6%E0%A6%A8-%E0%A6%8F%E0%A6%95%E0%A7%81%E0%A6%B0%E0%A7%87%E0%A6%B8%E0%A6%BFclassification-accuracy" aria-hidden="true"><span class="octicon octicon-link"></span></a>ক্লাসিফিকেশন একুরেসি(Classification Accuracy)</h3>
+
+<p>একুরেসি শব্দটা যখন আমরা ব্যবহার করি তখন আমরা আসলে এই ক্লাসিফিকেশন একুরেসিকেই বুঝিয়ে থাকি। ছোটবেলা থেকে যেধরনের হিসেব করে আমরা অভ্যস্ত এটা ঠিক সেরকম কিছুই। কোন জটিল, মারপ্যাঁচ নেই।</p>
+
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>Accuracy</mtext><mo>=</mo><mfrac><mtext>Number of correct predictions</mtext><mtext>Total number of predictions made</mtext></mfrac></mrow><annotation encoding="application/x-tex">\text{Accuracy} = \frac{\text{Number of correct predictions}}{\text{Total number of predictions made}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord text"><span class="mord">Accuracy</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.25188em;vertical-align:-0.8804400000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714399999999998em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">Total number of predictions made</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">Number of correct predictions</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804400000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+
+<p>অর্থাৎ, আমাকে যদি ১০০ টা প্রেডিকশন করতে হয় যার - মধ্যে ৯০ টা সঠিকভাবে করতে পারি আর বাকি ১০ টা ভুল করি। তবে, উপরের সূত্রমতে আমার ক্লাসিফিকেশন একুরেসি আসবে ৯০%( <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mtext>৯০</mtext><mtext>১০০</mtext></mfrac></mrow><annotation encoding="application/x-tex">\frac{৯০}{১০০}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.217331em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.872331em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord brahmic_fallback mtight">১</span><span class="mord brahmic_fallback mtight">০</span><span class="mord brahmic_fallback mtight">০</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord brahmic_fallback mtight">৯</span><span class="mord brahmic_fallback mtight">০</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>) ।</p>
+
+<p>এই পদ্ধতি, একটা মডেল কতটা ভালোভাবে প্রেডিক্ট করতে পারছে কিংবা তার কার্যকারিতা সম্পর্কে জানার জন্য যথেষ্ট নয়। ধরি, Kaggle এর বিখ্যাত <a href="https://www.kaggle.com/c/titanic">টাইটানিক কম্পিটেশনের</a> জন্য তৈরি একটি মডেলের ক্লাসিফিকেশন একুরেসি ভ্যালিডেশন(validation) স্টেজে পেলাম ৯৮% - তাহলে কি সেটা দারুন কোন মডেল? যদি খেয়াল করে দেখি সে সবসময়ই “1” প্রেডিক্ট করছে (অর্থাৎ যাত্রী বেঁচে গিয়ে ছিল। ‘0’ দ্বারা দূর্ঘটনায় মৃতদের বোঝায়।),যে ডাটা দিয়ে মডেলকে প্রেডিক্ট করতে বলা হচ্ছে সেখানে ১০০ টার মধ্যে ৯৮ টাই বেঁচে যাওয়া মানুষের ডাটা ছিল। যেটার জন্য আসলে “মেশিন লার্নিং”-ই প্রয়োজন নেই, শুধু “print” সেটেটমেন্ট দিয়ে “1” প্রিন্ট করে দিলেই হয় যাবে। কিন্তু সেটা কি টেস্ট ফাইলে কাজ করবে? সেখানে এই মডেল মুখ থুবড়ে পড়ে থাকবে।</p>
+
+<h3 id="কনফিউশন-মেট্রিক্সconfusion-matrix">
+<a class="anchor" href="#%E0%A6%95%E0%A6%A8%E0%A6%AB%E0%A6%BF%E0%A6%89%E0%A6%B6%E0%A6%A8-%E0%A6%AE%E0%A7%87%E0%A6%9F%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%95%E0%A7%8D%E0%A6%B8confusion-matrix" aria-hidden="true"><span class="octicon octicon-link"></span></a>কনফিউশন মেট্রিক্স(Confusion Matrix)</h3>
+
+<p>কোন মডেল কতটুকু ভালোভাবে প্রেডিক্ট করতে পারছে তা জানা ও বুঝার জন্য এই মেট্রিক্স খুবই গুরুত্বপূর্ণ। আমরা কোন একটা বাইনারি ক্লাসিফিকেশন প্রবলেমের কথা চিন্তা করি। <a href="https://www.kaggle.com/uciml/breast-cancer-wisconsin-data">ব্রেস্ট ক্যান্সার ডাটাসেটের</a> সাথে সবারই কমবেশি পরিচয় থাকার কথা। যে ডাটাসেট ইউজ করে কারো ব্রেস্ট ক্যান্সার শনাক্ত করতে পারি। যেহেতু এখানে সম্ভাব্য আউটপুট তথা ক্লাস(ব্রেস্ট ক্যান্সার আছে, ব্রেস্ট ক্যান্সার নেই) দু’টি তাই এটিকে বাইনারি ক্লাসিফিকেশন প্রবলেম বলা হচ্ছে।</p>
+
+<p>এখানে মডেলের ভুলটা আমরা কিভাবে চিন্তা করতে পারি? আমার মডেল বলছে যার ক্যান্সার আছে, সেক্ষেত্রে দু’টো সম্ভাবনা থাকে - তার আসলেই ক্যান্সার আছে, নয়তো ক্যান্সার না থাকার পরও আমার মডেল বলছে তার ক্যান্সার আছে।</p>
+
+<p>আর যার ক্যান্সার নেই সেক্ষেত্রেও এমন ভুল হতে পারে যে, তাকে বলছে তার ক্যান্সার আছে। এভাবে আমরা মোট ৪ টা সিনারিও পাই -</p>
+
+<p><img src="/jabers-blog/images/confusion_matrix.png" alt="_config.yml"></p>
+
+<p>ছবির Predicted - YES/NO আমার মডেলের উত্তর, আর Actual YES/NO আমার কাছে যে ডাটা আছে সেটার উত্তর(বাস্তব)।</p>
+
+<p><strong>True Positive</strong> - বলতে বুঝায় আমার মডেল বলছে রোগীর ব্রেস্ট ক্যান্সার আছে এবং বাস্তবেও(ডাটাসেটেও) দেখা যাচ্ছে তার ক্যান্সার আছে। সুতরাং, যখন প্রেডিক্টেড পজেটিভ রেজাল্ট আর বাস্তবের পজেটিভ রেজাল্ট মিলে যায় সেটা।</p>
+
+<p><strong>False Negative</strong> - যখন আমার মডেল বলছে রোগীর ব্রেস্ট ক্যান্সার হয় নি কিন্তু বাস্তবে তার ক্যান্সার আছে। সুতরাং, যখন প্রেডিক্টেড রেজাল্ট নেগেটিভ কিন্তু বাস্তবের রেজাল্ট পজেটিভ থাকে।</p>
+
+<p><strong>False Positive</strong> - যখন আমার মডেল বলছে রোগীর ক্যান্সার আছে কিন্তু বাস্তবে রোগীর ক্যান্সার নেই। সুতরাং, প্রেডিক্টেড রেজাল্ট পজেটিভ কিন্তু বাস্তবের রেজাল্ট নেগেটিভ।</p>
+
+<p><strong>True Negative</strong> - যখন আমার মডেল বলছে রোগীর ক্যান্সার নেই এবং বাস্তবেও রোগীর ক্যান্সার নেই। সুতরাং, প্রেডিক্টেড রেজাল্ট নেগেটিভ এবং বাস্তবের রেজাল্টও নেগেটিভ।</p>
+
+<p>আমরা যে উপরে ক্লাসিফিকেশন একুরেসি বের করেছি সেখানে -</p>
+
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>Number of correct predictions</mtext><mo>=</mo><mtext>True Positive + True Negative</mtext></mrow><annotation encoding="application/x-tex">\text{Number of correct predictions} = \text{True Positive +  True Negative}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord text"><span class="mord">Number of correct predictions</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord text"><span class="mord">True Positive + True Negative</span></span></span></span></span></span>
+
+<p>আমরা এখন মডেলের পার্ফর্মেন্স আরেকটু ভালোভাবে বুঝতে কিছু প্রশ্ন করতে পারি। আমাদের মডেল যাদের ক্যান্সার রোগীকে শনাক্ত করছে সেটা কতটুকু বিশ্বাসযোগ্য?</p>
+
+<h3 id="প্রেসিশনprecision">
+<a class="anchor" href="#%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A7%87%E0%A6%B8%E0%A6%BF%E0%A6%B6%E0%A6%A8precision" aria-hidden="true"><span class="octicon octicon-link"></span></a>প্রেসিশন(Precision)</h3>
+
+<p>প্রেসিশন(Precision) আমাদের উপরের প্রশ্নের উত্তর দিবে -</p>
+
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>Precision</mtext><mo>=</mo><mfrac><mtext>True Positive</mtext><mtext>True Positive + False Positive</mtext></mfrac></mrow><annotation encoding="application/x-tex">\text{Precision} = \frac{\text{True Positive}}{\text{True Positive + False Positive}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">Precision</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.1296600000000003em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">True Positive + False Positive</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">True Positive</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+
+<p>এর মান কম আসলে বুঝতে পারবো আমাদের মডেল ক্যান্সার রোগীকে সঠিকভাবে শনাক্ত করতে পারছে না বরং যাদের ক্যান্সার নেই তাদের ক্যান্সার রোগী হিসেবে শনাক্ত করছে। উদাহরণ দিয়ে যদি বুঝতে চেষ্টা করি -</p>
+
+<p>True Positive(TP) = 1</p>
+
+<p>False Positive(FP) = 2</p>
+
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>r</mi><mi>e</mi><mi>c</mi><mi>i</mi><mi>s</mi><mi>i</mi><mi>o</mi><mi>n</mi><mo>=</mo><mfrac><mrow><mi>T</mi><mi>P</mi></mrow><mrow><mi>T</mi><mi>P</mi><mo>+</mo><mi>F</mi><mi>P</mi></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mn>2</mn></mrow></mfrac><mo>=</mo><mn>0.33</mn></mrow><annotation encoding="application/x-tex">Precision = \frac{TP}{TP + FP} = \frac{1}{1 + 2} = 0.33</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">i</span><span class="mord mathdefault">s</span><span class="mord mathdefault">i</span><span class="mord mathdefault">o</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.1296600000000003em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">3</span><span class="mord">3</span></span></span></span></span>
+
+<p>সুতরাং, আমার মডেল যদি ১০০ জন ক্যান্সার রোগী শনাক্ত করে তবে তার মধ্যে কেবল ৩৩ জন প্রকৃতপক্ষে ক্যান্সার রোগী।</p>
+
+<h3 id="রিকলrecall">
+<a class="anchor" href="#%E0%A6%B0%E0%A6%BF%E0%A6%95%E0%A6%B2recall" aria-hidden="true"><span class="octicon octicon-link"></span></a>রিকল(Recall)</h3>
+
+<p>এখন প্রশ্ন যদি হয় - আমাদের মডেল প্রকৃতপক্ষে কত ক্যান্সার রোগীকে শনাক্ত করতে পেরেছে?</p>
+
+<p>এই প্রশ্নের উত্তর রিকল(Recall) থেকে পাবো আমরা।</p>
+
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>Recall</mtext><mo>=</mo><mfrac><mtext>True Positive</mtext><mtext>True Positive + False Negative</mtext></mfrac></mrow><annotation encoding="application/x-tex">\text{Recall} = \frac{\text{True Positive}}{\text{True Positive + False Negative}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord text"><span class="mord">Recall</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.2407700000000004em;vertical-align:-0.8804400000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">True Positive + False Negative</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">True Positive</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804400000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+
+<p>এখন আমরা ছোট একটা উদাহরণ দিয়ে বুঝে নিই -</p>
+
+<p>True Positive(TP) = 1</p>
+
+<p>False Negative(FN) = 9</p>
+
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mi>e</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>l</mi><mo>=</mo><mfrac><mrow><mi>T</mi><mi>P</mi></mrow><mrow><mi>T</mi><mi>P</mi><mo>+</mo><mi>F</mi><mi>N</mi></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mn>9</mn></mrow></mfrac><mo>=</mo><mn>0.1</mn></mrow><annotation encoding="application/x-tex">Recall =  \frac{TP}{TP + FN} = \frac{1}{1 + 9} = 0.1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.1296600000000003em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">9</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">1</span></span></span></span></span>
+
+<p>এর মানে দাঁড়াচ্ছে, মোট ১০ জন ক্যান্সার রোগীর মধ্যে সে ১ জনকে সঠিকভাবে শনাক্ত করতে পেরেছে।</p>
+
+<h4 id="update-1-on-september-14th">
+<a class="anchor" href="#update-1-on-september-14th" aria-hidden="true"><span class="octicon octicon-link"></span></a>Update-1 on September 14th</h4>
+
+<h3 id="এফ-ওয়ান-স্কোরf1-score">
+<a class="anchor" href="#%E0%A6%8F%E0%A6%AB-%E0%A6%93%E0%A7%9F%E0%A6%BE%E0%A6%A8-%E0%A6%B8%E0%A7%8D%E0%A6%95%E0%A7%8B%E0%A6%B0f1-score" aria-hidden="true"><span class="octicon octicon-link"></span></a>এফ ওয়ান স্কোর(F1 Score)</h3>
+
+<p>প্রেসিশন এবং রিকল দুইটা আলাদা প্রশ্নের উত্তর দেয়। কিন্তু আমার মডেলকে ঠিকভাবে মূল্যায়নের জন্য আসলে এদের যেকোন একজনকে নয় বরং উভয়কেই প্রয়োজন। দুইটার মধ্যে একটা সামঞ্জস্য করে কিছু করতে পারলে আমাদের জন্য মঙ্গল। সেই কাজের দায়িত্ব নেয় - এফ ওয়ান স্কোর(F1 score)। একে “এফ স্কোর”(F score) অথবা “এফ মেজার”(F measure)-ও বলা হয়ে থাকে। সমীকরণের মাধ্যমে যদি আমরা দেখতে চাই -</p>
+
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mn>1</mn><mo>=</mo><mn>2</mn><mo>∗</mo><mfrac><mn>1</mn><mrow><mfrac><mn>1</mn><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>c</mi><mi>i</mi><mi>s</mi><mi>i</mi><mi>o</mi><mi>n</mi></mrow></mfrac><mo>+</mo><mfrac><mn>1</mn><mrow><mi>r</mi><mi>e</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>l</mi></mrow></mfrac></mrow></mfrac><mo>=</mo><mn>2</mn><mo>∗</mo><mfrac><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>c</mi><mi>i</mi><mi>s</mi><mi>i</mi><mi>o</mi><mi>n</mi><mo>∗</mo><mi>r</mi><mi>e</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>l</mi></mrow><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>c</mi><mi>i</mi><mi>s</mi><mi>i</mi><mi>o</mi><mi>n</mi><mo>+</mo><mi>r</mi><mi>e</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>l</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">F1 = 2 * \frac{1}{\frac{1}{precision} + \frac{1}{recall}} = 2 * \frac{precision * recall}{precision + recall}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.537656em;vertical-align:-1.216216em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.264892em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">p</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">s</span><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.481108em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.216216em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.25188em;vertical-align:-0.8804400000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714399999999998em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">p</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">i</span><span class="mord mathdefault">s</span><span class="mord mathdefault">i</span><span class="mord mathdefault">o</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">p</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">i</span><span class="mord mathdefault">s</span><span class="mord mathdefault">i</span><span class="mord mathdefault">o</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804400000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+
+<p>প্রেসিশন এবং রিকল-কে ধরে  এরিথমেটিক মিন(arithmetic mean) বের করা হয় নি। কারণ দুইটার হর(denominator) আলাদা। চাইলেই দু’টি সংখ্যার গড় বের করা সম্ভব - যোগ করে, ২ দিয়ে ভাগ দিয়ে। কিন্তু তাতে কি আদৌ কোন অর্থবহ মানে বের করা সম্ভব হবে?</p>
+
+<p>যার জন্য প্রেসিশন আর রিকলের হার্মোনিক মিন(<a href="https://www.mathsisfun.com/numbers/harmonic-mean.html">Harmonic mean</a>) বের করা হয়। আর এই গড়কে “এফ ওয়ান স্কোর”(F1 Score) বলে। এর মানের রেঞ্জ [০,১]</p>
+
+<h4 id="resources">
+<a class="anchor" href="#resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h4>
+
+<p>1 - <a href="https://machinelearningmastery.com/metrics-evaluate-machine-learning-algorithms-python/">Metrics To Evaluate Machine Learning Algorithms in Python</a></p>
+
+<p>2 - <a href="https://towardsdatascience.com/metrics-to-evaluate-your-machine-learning-algorithm-f10ba6e38234">Metrics to Evaluate your Machine Learning Algorithm</a></p>
+
+<p>3 - <a href="https://developers.google.com/machine-learning/crash-course/classification/true-false-positive-negative">Classification: True vs. False and Positive vs. Negative</a></p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="jabertuhin/jabers-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/jabers-blog/machine%20learning/2019/09/10/classification-evaluation-matrices-part-1.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jabers-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/jabers-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/jabers-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>ML Enthusiast</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/mir-mohammad-jaber" title="mir-mohammad-jaber"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

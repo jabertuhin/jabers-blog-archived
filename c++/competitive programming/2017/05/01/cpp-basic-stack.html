@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>C++ বেসিক ধারণা, স্ট্যাক(Stack) (Lec - 1.6) | Jaber’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="C++ বেসিক ধারণা, স্ট্যাক(Stack) (Lec - 1.6)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Learn about stack operations and use cases." />
+<meta property="og:description" content="Learn about stack operations and use cases." />
+<link rel="canonical" href="https://jabertuhin.github.io/jabers-blog/c++/competitive%20programming/2017/05/01/cpp-basic-stack.html" />
+<meta property="og:url" content="https://jabertuhin.github.io/jabers-blog/c++/competitive%20programming/2017/05/01/cpp-basic-stack.html" />
+<meta property="og:site_name" content="Jaber’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-05-01T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://jabertuhin.github.io/jabers-blog/c++/competitive%20programming/2017/05/01/cpp-basic-stack.html","@type":"BlogPosting","headline":"C++ বেসিক ধারণা, স্ট্যাক(Stack) (Lec - 1.6)","dateModified":"2017-05-01T00:00:00-05:00","datePublished":"2017-05-01T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://jabertuhin.github.io/jabers-blog/c++/competitive%20programming/2017/05/01/cpp-basic-stack.html"},"description":"Learn about stack operations and use cases.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/jabers-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://jabertuhin.github.io/jabers-blog/feed.xml" title="Jaber's Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-170132741-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-170132741-2');
+</script>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/jabers-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/jabers-blog/">Jaber&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/jabers-blog/about/">About Me</a><a class="page-link" href="/jabers-blog/search/">Search</a><a class="page-link" href="/jabers-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">C++ বেসিক ধারণা, স্ট্যাক(Stack) (Lec - 1.6)</h1><p class="page-description">Learn about stack operations and use cases.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2017-05-01T00:00:00-05:00" itemprop="datePublished">
+        May 1, 2017
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      3 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#C++">C++</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#Competitive Programming">Competitive Programming</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>স্ট্যাক(Stack) - একটা ডাটা স্ট্রাকচার যা  জটিল কিছু সমস্যা সমাধানে আমাদের সাহায্য করে থাকে। ব্র্যাকেট ম্যাচিং প্রবলেম কিংবা মেজ(Maze) ট্রাভার্সাল প্রবলেমের মতো জটিল কিছু সমস্যার সমাধান আমরা এর মাধ্যমে করতে পারি।</p>
+
+<p>Pringles এর খালি একটা কৌটা কল্পনা করি(বাহির থেকে যার ভিতরের কোন বস্তু দেখা সম্ভব না), যেটাতে বিভিন্ন লেবেলিং করা বল রাখি(অর্থাৎ এক বলের উপর লিখা 1,আরেকটায় 2 এভাবে)। ৫ টা বল এভাবে রাখি। আমি যদি এখন প্রথম বলটা  বের করতে চাই তাহলে আমাকে কি করতে হবে? আমি তো সরাসরি একেবারে নিচের বলটা তুলতে পারছি না। আমার সেই সুযোগ নেই। ঐ পর্যন্ত পৌঁছাতে হলে আমাকে আগে তার উপরের বলগুলো সরাতে হবে।</p>
+
+<p>প্রথমে উপর থেকে ৪ টা বল বের করে আনতে হবে, এরপর আমি ৫ নাম্বার বলটা যেটা সবার প্রথমে রেখেছিলাম সেটা বের করতে পারবো। Stack , LIFO রুলস ফলো করে (Last In First Out ).</p>
+
+<p>‘ [ ’ -&gt; এই চিহ্ন দিয়ে pringles(Stack) এর তলানি(Bottom) বুঝানো হচ্ছে।</p>
+
+<p>‘ ( ’ -&gt; এই চিহ্ন দিয়ে pringles(Stack) এর মুখ(door) বুঝানো হচ্ছে। মানে একমাত্র এই  মুখ দিয়েই বল রাখা কিংবা বের করা সম্ভব।</p>
+
+<p>প্রথমে স্ট্যাকের ভিতরের চিত্র অনেকটা এইরকম হবে(Stack পুরো খালি) -&gt; [(</p>
+
+<p>সবার প্রথমে 1 লেবেল করা বল রাখি -&gt; [1 (</p>
+
+<p>এরপর 4 লেবেল করা বল রাখি -&gt; [1 . 4 (</p>
+
+<p>এরপর 5  লেবেল করা বল রাখি -&gt; [1 . 4 . 5 (</p>
+
+<p>এরপর 2  লেবেল করা বল রাখি -&gt; [1 . 4 . 5 . 2 (</p>
+
+<p>এরপর 3  লেবেল করা বল রাখি -&gt; [1 . 4 . 5 . 2 . 3 (</p>
+
+<p>একটার উপরে আরেকটা বল রাখা হচ্ছে। এটা হলো আমার বর্তমানে স্ট্যাকের দশা। এই কাজটা করার জন্য সবার প্রথমে  আমাকে স্ট্যাক(Stack) টা ডিক্লেয়ার করতে হবে। এইভাবে-</p>
+
+<blockquote>
+  <p>stack<int> stck_variable;     [ stack<data_type> variable name]</data_type></int></p>
+</blockquote>
+
+<p>এইবার আমরা যে বল রাখার কাজটা করেছি সেটা করতে হবে এইভাবে</p>
+
+<blockquote>
+  <p>stck_variable.push(1);</p>
+</blockquote>
+
+<blockquote>
+  <p>stck_variable.push(4);</p>
+</blockquote>
+
+<blockquote>
+  <p>stck_variable.push(5);</p>
+</blockquote>
+
+<blockquote>
+  <p>stck_variable.push(2);</p>
+</blockquote>
+
+<blockquote>
+  <p>stck_variable.push(3);</p>
+</blockquote>
+
+<p>এখন আমি যদি জানতে চাই সবার উপরে কোন বলটা আছে, সেক্ষেত্রে আমার কমান্ডটা হবে এই ধরনের -&gt;</p>
+
+<blockquote>
+  <p>stck_variable.top();</p>
+</blockquote>
+
+<p>এইটা সবার উপরের ভ্যালুটা রিটার্ন করবে। স্ট্যাক থেকে বের করবে না। জিনিসটা অনেকটা এরকম যে - উঁকি দিয়ে স্ট্যাকের উপরের ভ্যালু দেখে আমাকে জানিয়ে দেয়া।</p>
+
+<p>আর আমি যদি ভ্যালু বের করে অর্থাৎ বল বের করতে চাই স্ট্যাক থেকে সেক্ষেত্রে কমান্ড হবে (ডিলেট করে ফেলা বলা চলে)-&gt;</p>
+
+<blockquote>
+  <p>stck_variable.pop();</p>
+</blockquote>
+
+<p>এইটা কোন কিছু রিটার্ন করবে না । শুধু উপরে থেকে বলটা তুলে ফেলবে ।</p>
+
+<p>আর আমি যে স্ট্যাকে কাজ করছি আমার স্ট্যাকে কি আদৌ আর কোন বল অর্থাৎ ভ্যালু আছে কি না তা দেখার জন্য -&gt;</p>
+
+<blockquote>
+  <p>stck_variable.empty();</p>
+</blockquote>
+
+<p>লিখতে হয় । এটা true/false রিটার্ন করে । স্ট্যাক খালি থাকলে true রিটার্ন করবে অন্যথা false.</p>
+
+<p>স্ট্যাক খালি থাকার পরেও যদি আমি কোন ভ্যালু বের করে আনতে চাই সেক্ষেত্রে ভুল হয়ে গেলো না? সেক্ষেত্রে runtime error দিবে।</p>
+
+<p>আর স্ট্যাকে বর্তমানে কতগুলি এলিমেন্ট আছে তা জানার জন্য -&gt;</p>
+
+<blockquote>
+  <p>stck_variable.size();</p>
+</blockquote>
+
+<p>লিখতে হয়ে  এইটা স্ট্যাকে বিদ্যমান এলিমেন্টের সংখ্যা রিটার্ন করে ।</p>
+
+<p>এইবার একটা প্রবলেম ট্রাই করিঃ</p>
+
+<p>Bracket Matching -&gt; “()” এইটা ভ্যালিড  কিন্তু “((”এইটা নয় ।</p>
+
+<p>একটা স্ট্রিং ইনপুট দেয়া হবে যেখানে কোন স্পেস থাকবে না , থাকবে শুধু ‘(’ and ‘)’ ক্যারেক্টার ।</p>
+
+<p>আউটপুটঃ</p>
+
+<p>Print “Valid” if the expression is valid ,otherwise “Not Valid”</p>
+
+<p>==&gt;</p>
+
+<p>এইখানে আমার এপ্রোচটা হবে অনেকটা এই রকম আমি কোন ওপেনিং ব্র্যাকেট পেলে তা স্ট্যাকে পুশ করে রাখবো আর ক্লোজিং ব্র্যাকেট পেলে স্ট্যাকের টপ এলিমেন্ট চেক করবো। যদি টপ এলিমেন্ট থাকে (যেটা এক্ষেত্রে একমাত্র ‘(’ ওপেনিং ব্র্যাকেট হওয়াই সম্ভব) তবে তা পপ করে বের দিবো।</p>
+
+<p>আর যদি ক্লোজিং ব্র্যাকেট পাই কিন্তু স্ট্যাক ফাঁকা থাকে তার মানে একটা ক্লজিং ব্র্যাকেট অতিরিক্ত আছে। সুতরাং ভ্যালিড না।</p>
+
+<p>কিংবা আমার ইনপুট নেয়া পুরো স্ট্রিং চেক করা শেষ এরপরও দেখলাম স্ট্যাকে কিছু অপেনিং ব্র্যাকেট রয়ে গেছে তার মানে দাঁড়াচ্ছে এক্সপ্রেশনটা ভুল।</p>
+
+<p>এখানে লজিক হচ্ছে অপেনিং আর ক্লোজিং ব্র্যাকেট সবসময় জোড়ায় জোড়ায় থাকবে। এর ব্যতিক্রম হলেই এক্সপ্রেশনটা ভুল হয়ে যাবে। এইবার কোডটা দেখি-</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;bits/stdc++.h&gt;
+</span> 
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+ 
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+        <span class="n">string</span> <span class="n">line</span><span class="p">;</span>
+        <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">line</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="c1">// input string size</span>
+        <span class="n">stack</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="n">k</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">shotto</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span> 
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">sz</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'('</span><span class="p">){</span> <span class="c1">// opening bracket found and storing it in the stack</span>
+               <span class="n">k</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+            <span class="p">}</span>
+            <span class="k">else</span><span class="p">{</span> <span class="c1">// closing bracket found</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">empty</span><span class="p">()){</span>  <span class="c1">//checking wheter the stack is empty or not .</span>
+                    <span class="n">shotto</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">k</span><span class="p">.</span><span class="n">top</span><span class="p">();</span> <span class="c1">// a pair matched . so deleting them</span>
+                <span class="n">k</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+           <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">shotto</span> <span class="o">==</span> <span class="nb">true</span><span class="p">){</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Valid</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span><span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Not Valid</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can try - <a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;problem=614">UVA 673 (Parentheses Balance)</a></p>
+
+<p>You can also read and practice here - <a href="https://www.hackerearth.com/practice/data-structures/stacks/basics-of-stacks/tutorial/">Basics of Stacks</a></p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="jabertuhin/jabers-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/jabers-blog/c++/competitive%20programming/2017/05/01/cpp-basic-stack.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jabers-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/jabers-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/jabers-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>ML Enthusiast</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/mir-mohammad-jaber" title="mir-mohammad-jaber"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>C++ বেসিক ধারণা, ভেক্টর(Vector) (Lec - 1.5) | Jaber’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="C++ বেসিক ধারণা, ভেক্টর(Vector) (Lec - 1.5)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="C++ Introduction" />
+<meta property="og:description" content="C++ Introduction" />
+<link rel="canonical" href="https://jabertuhin.github.io/jabers-blog/c++/competitive%20programming/2017/04/30/cpp-basic-vector.html" />
+<meta property="og:url" content="https://jabertuhin.github.io/jabers-blog/c++/competitive%20programming/2017/04/30/cpp-basic-vector.html" />
+<meta property="og:site_name" content="Jaber’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-04-30T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://jabertuhin.github.io/jabers-blog/c++/competitive%20programming/2017/04/30/cpp-basic-vector.html","@type":"BlogPosting","headline":"C++ বেসিক ধারণা, ভেক্টর(Vector) (Lec - 1.5)","dateModified":"2017-04-30T00:00:00-05:00","datePublished":"2017-04-30T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://jabertuhin.github.io/jabers-blog/c++/competitive%20programming/2017/04/30/cpp-basic-vector.html"},"description":"C++ Introduction","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/jabers-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://jabertuhin.github.io/jabers-blog/feed.xml" title="Jaber's Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-170132741-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-170132741-2');
+</script>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/jabers-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/jabers-blog/">Jaber&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/jabers-blog/about/">About Me</a><a class="page-link" href="/jabers-blog/search/">Search</a><a class="page-link" href="/jabers-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">C++ বেসিক ধারণা, ভেক্টর(Vector) (Lec - 1.5)</h1><p class="page-description">C++ Introduction</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2017-04-30T00:00:00-05:00" itemprop="datePublished">
+        Apr 30, 2017
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      3 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#C++">C++</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#Competitive Programming">Competitive Programming</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>আমরা সবাই মোটামোটি Array সম্পর্কে জানি । একটা নির্দিষ্ট পরিমাণ দৈর্ঘ্যের হতে হয় সেই এরেকে ।</p>
+
+<p>এরে ডিক্লেয়ারেশনটা অনেকটা এইরকম -&gt; int arr[n];</p>
+
+<p>অর্থাৎ এরে ডিক্লেয়ার করার ক্ষেত্রে আমাকে এর দৈর্ঘ্য বলে দিতে হয় । এমন যদি কখনো হয় আমাকে কতগুলি নাম্বার স্টোর করতে হবে কিন্তু সঠিক নাম্বার আমাকে বলা থাকবে না (n এর মানটা আমাকে দেয়া থাকবে না/বলে দেয়া হবে না) । সেক্ষেত্রে আমি কোনভাবেই এরে ডিক্লেয়ার করতে পারছি না । কারণ যে দৈর্ঘ্যেরই এরে ডিক্লেয়ার করি না কেন(অনেক বড় লেন্থের )  তার চেয়ে একটা নাম্বার বেশি দিলেই আমার কোড কাজ করবে না । এইসব ক্ষেত্রে আমরা ভেক্টর ব্যবহার করে থাকি ।</p>
+
+<p>[ জাভাতে ArrayList  নামে এইরকম একটা জিনিস আছে । তবে এইখানে আমরা সি++ এর ভেক্টর নিয়েই কথা বলবো ]</p>
+
+<p><img src="/jabers-blog/images/vector-example.jpg" alt="_config.yml" /></p>
+
+<p>এই ছবিটা একটা ট্রান্সপারেন্ট টিউবের । ছবিতে যদিও টিউবের দুই পাশ বন্ধ । কিন্তু আমরা চিন্তা করবো এক পাশ বন্ধ অন্য পাশ খোলা এইরকম একটা টিউবের । আর টিউবের দৈর্ঘ্য infinity ধরি আপাতত । এখন টিউবে “1” লেবেল করা একটা বল রাখি , এভাবে করে মোট ১০ টা বল রাখি যেগুলোর উপরে একটা করে নাম্বার লিখা(1,2,3,4,5,6,7,8,9,10)।</p>
+
+<p>তাহলে টিউবে এখন ১০ টা বল আছে । আমি বাহির থেকে দেখতে পারছি টিউবের ভেতর কি কি বল আছে(মানে কোন বলের নাম্বার কত) ।</p>
+
+<p>এখন একটা প্রবলেম সলভ করার চেষ্টা করি (থিওরিটিকালি)।</p>
+
+<p>“রায়হান এর ব্যাপারে একটা মজার ব্যাপার ওর ছোট বোন মিলি জানতে পারে । রায়হান ওলট পালোট করে রাখা কোন জিনিস দেখলেই রেগে যায় আর তা সাথে ঠিক ঠিক করে রাখে । যেমন ওর টেবিলের উপরে রাখা বইগুলো ছোট থেকে বড় আকারে সাজানো ।</p>
+
+<p>আর অন্যদিকে মিলি হলো অনেকটা অলস । ওর ঘরের সব পুতুল এলোমেলো । ওর মা ওকে আজকের মধ্যে সব গোছাতে বলেছে । মিলি যেহেতু অলস তাই ও রায়হানকে ডেকে রুমে নিয়ে এলো । রায়হান মিলিকে কিছুক্ষণ বকা ঝকা করেই রুম গোছাতে লেগে গেলো ।</p>
+
+<p>ইনপুটঃ</p>
+
+<p>মিলির রুমে রাখা প্রত্যেকটা পুতুলের উচ্চতা দেয়া থাকবে । আর মিলি এতোই অলস যে ও গুনে রাখে নি ওর রুমে কতগুলো পুতুল আছে । আর তাই রায়হানও জানে না কতগুলো পুতুল ওকে সাজাতে হবে(ছোট থেকে বড় এই সিকুয়েন্সে ) ।</p>
+
+<p>আউটপুটঃ</p>
+
+<p>রায়হান সাজানোর পরে পুতুলগুলো কিভাবে আছে সেটা ।</p>
+
+<p><strong>Sample Input:</strong></p>
+
+<blockquote>
+  <p>10 7 3 1 2 4 6 5 9 8</p>
+</blockquote>
+
+<p><strong>Sample Output:</strong></p>
+
+<blockquote>
+  <p>1 2 3 4 5 6 7 8 9 10</p>
+</blockquote>
+
+<p><strong>Solution:</strong></p>
+
+<p>এই প্রবলেম কিভাবে সলভ করবে?  তোমার তো পুতুলের সংখ্যা জানা নেই? Array দিয়ে কোনভাবেই কাজ করতে পারছো না।</p>
+
+<p>হ্যাঁ বলতে পারো <code class="language-plaintext highlighter-rouge">int arr[1000000]</code> এইটা যদি করি?</p>
+
+<p>আমি যদি এর চেয়ে একটা বেশিও ইনপুট দেই, তাহলে কাজ করবে না কোড সঠিকভাবে।</p>
+
+<p>ভেক্টরের কিছু জিনিস দেখে এরপর কোডে যাই।</p>
+
+<p>ভেক্টর ডিক্লেয়ারেশন -&gt; vector<data_type>  variable_name;</data_type></p>
+
+<blockquote>
+  <p>Example: vector<int> vNum;</int></p>
+</blockquote>
+
+<p>vector<string> vName;</string></p>
+
+<p>ভেক্টর সাইজ জানার জন্য (অর্থাৎ ভেক্টরে কতগুলো এলিমেন্ট আমি রাখলাম সেটা জানার জন্য) -&gt; variable_name.size();</p>
+
+<blockquote>
+  <p>Example: int sz = vNum.size(); // যেই নাম্বারটা(ভেক্টরের সাইজ) রিটার্ন করবে তা একটা ভেরিয়েবলে সেভ করে রাখছি।</p>
+</blockquote>
+
+<p>উপরে টিউবে ১০ নাম্বার রেখে ছিলাম তাহলে এইখানে sz = 10 হয়ে যাবে।</p>
+
+<p>এইবার আসি ভেক্টরে নাম্বার রাখবো কিভাবে?</p>
+
+<p>Variable_name.push_back(num);</p>
+
+<p>মানে আমার ভেক্টরের টিউবে num ভেরিয়েবলের উপাদানটা পুশ হবে।</p>
+
+<p>[] এইটা যদি ভেক্টরের প্রাথমিক অবস্থা হয়।</p>
+
+<blockquote>
+  <p>vNum.push_back(1);</p>
+</blockquote>
+
+<p>এই কমান্ডের পরে হবে -&gt; [1]</p>
+
+<blockquote>
+  <p>vNum.push_back(2);</p>
+</blockquote>
+
+<p>এই কমান্ডের পরে হবে -&gt; [1,2]</p>
+
+<p>সরাসরি নাম্বার না দিয়ে ঐ জায়গায় যে ভেরিয়েবলের জিনিস আমি ভেক্টরে পুশ করতে চাই সেটি দিলেও হবে।</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">num</span><span class="p">;</span>
+
+<span class="n">vNum</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">num</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>এই কমান্ডের পরে হবে -&gt; [1,2,10] // num = 10 ছিল মনে করি</p>
+
+<p>এতোটুকুই নতুন বলা যায় ।</p>
+
+<p>আর ভেক্টর ট্রাভার্সাল সাধারণ এরের মতোই ।</p>
+
+<p>বর্তমানে আমাদের ভেক্টর আছে এই অবস্থায় -&gt; [1,2,10]</p>
+
+<p>এখন আমি নাম্বারগুলি প্রিন্ট করে দেখতে চাই , ইউজার কি কি নাম্বার ইনপুট দিয়েছে।</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">vNum</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">sz</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">vNum</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>ভেক্টরেরও ইন্ডেক্সিং শুরু 0 (জিরো) থেকে ।</p>
+
+<p>ভেক্টরের আরো বিভিন্ন ধরনের ফাংশন আছে , গুগল করে শিখে নিতে পারো । এই লিখায় আমি বেসিক ধারণা দিচ্ছি ।</p>
+
+<p>Solution for the above problem:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;bits/stdc++.h&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">num</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">num</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>
+        <span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">num</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">sort</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+
+    <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">sz</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="err"> </span> <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>সি++ এর sort ফাংশন ব্যবহার করে ভেক্টর সোর্ট করতে চাইলে</p>
+
+<blockquote>
+  <p>sort(vector_name.begin(), vector_name.end());</p>
+</blockquote>
+
+<p>এইভাবে লিখতে হয় , ascending অর্ডারে সোর্ট করে দিবে ।</p>
+
+<p>For more vector functions - <a href="http://www.cplusplus.com/reference/vector/vector/">vector</a></p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="jabertuhin/jabers-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/jabers-blog/c++/competitive%20programming/2017/04/30/cpp-basic-vector.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jabers-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/jabers-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/jabers-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>ML Enthusiast</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/mir-mohammad-jaber" title="mir-mohammad-jaber"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

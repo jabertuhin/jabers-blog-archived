@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>পাইথনে প্রি-কমিট হুকের সাথে পরিচিতি(Introduction to Pre-commit Hook in Python) | Jaber’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="পাইথনে প্রি-কমিট হুকের সাথে পরিচিতি(Introduction to Pre-commit Hook in Python)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Pre-commit Hook Configuration" />
+<meta property="og:description" content="Pre-commit Hook Configuration" />
+<link rel="canonical" href="https://jabertuhin.github.io/jabers-blog/pre-commit%20hook/git/python/bangla/2021/03/13/pre-commit-hook-in-python.html" />
+<meta property="og:url" content="https://jabertuhin.github.io/jabers-blog/pre-commit%20hook/git/python/bangla/2021/03/13/pre-commit-hook-in-python.html" />
+<meta property="og:site_name" content="Jaber’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-03-13T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://jabertuhin.github.io/jabers-blog/pre-commit%20hook/git/python/bangla/2021/03/13/pre-commit-hook-in-python.html","@type":"BlogPosting","headline":"পাইথনে প্রি-কমিট হুকের সাথে পরিচিতি(Introduction to Pre-commit Hook in Python)","dateModified":"2021-03-13T00:00:00-06:00","datePublished":"2021-03-13T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://jabertuhin.github.io/jabers-blog/pre-commit%20hook/git/python/bangla/2021/03/13/pre-commit-hook-in-python.html"},"description":"Pre-commit Hook Configuration","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/jabers-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://jabertuhin.github.io/jabers-blog/feed.xml" title="Jaber's Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-170132741-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-170132741-2');
+</script>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/jabers-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/jabers-blog/">Jaber&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/jabers-blog/about/">About Me</a><a class="page-link" href="/jabers-blog/search/">Search</a><a class="page-link" href="/jabers-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">পাইথনে প্রি-কমিট হুকের সাথে পরিচিতি(Introduction to Pre-commit Hook in Python)</h1><p class="page-description">Pre-commit Hook Configuration</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-03-13T00:00:00-06:00" itemprop="datePublished">
+        Mar 13, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      3 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#Pre-commit Hook">Pre-commit Hook</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#Git">Git</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#Python">Python</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#Bangla">Bangla</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#কেন-pre-commit-hook-প্রয়োজন">কেন pre-commit hook প্রয়োজন</a></li>
+<li class="toc-entry toc-h2"><a href="#pre-commit-প্যাকেজ-ইন্সটলেশন">pre-commit প্যাকেজ ইন্সটলেশন</a></li>
+<li class="toc-entry toc-h2"><a href="#pre-commit-configyaml--এর-মাধ্যমে-কনফিগারেশন">.pre-commit-config.yaml -এর মাধ্যমে কনফিগারেশন</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#pre-commit-hooks">pre-commit-hooks</a></li>
+<li class="toc-entry toc-h3"><a href="#flake8">flake8</a></li>
+<li class="toc-entry toc-h3"><a href="#mypy">mypy</a></li>
+<li class="toc-entry toc-h3"><a href="#tests">tests</a></li>
+<li class="toc-entry toc-h3"><a href="#উদাহরণ">উদাহরণ</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#resources">Resources:</a></li>
+</ul><p>প্রি-কমিট হুকের সাথে পরিচিতি Vladimir Iglovikov এর ব্লগ <a href="https://towardsdatascience.com/nine-simple-steps-for-better-looking-python-code-87e5d9d3b1cf">Nine simple steps for better-looking python code</a> পোস্টের মাধ্যমে। আমার কাছে খুবই ইন্টারেস্টিং কনসেপ্ট মনে হয়েছে, তাই এই ব্যাপারে একটা ব্লগ লিখা। পাইথন প্রজেক্টের ক্ষেত্রে কিভাবে আমরা pre-commit hook ব্যবহার করতে পারি, তা নিয়েই এই ব্লগ পোস্ট।</p>
+
+<h2 id="কেন-pre-commit-hook-প্রয়োজন">
+<a class="anchor" href="#%E0%A6%95%E0%A7%87%E0%A6%A8-pre-commit-hook-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A7%9F%E0%A7%8B%E0%A6%9C%E0%A6%A8" aria-hidden="true"><span class="octicon octicon-link"></span></a>কেন pre-commit hook প্রয়োজন</h2>
+<p>আমরা যখন একটা প্রজেক্টে কাজ করি- তখন সেখানে কয়েকজন ডেভলপার থাকে, একজন অন্যজনের কোড রিভিউ করে। পুল-রিকুয়েস্ট রিভিউ করার সময় আমাদের মূল ফোকাস যেন কোডের লজিক, ডিজাইন ইত্যাদি গুরুত্ব পূর্ণ বিষয়গুলোতে বেশি থাকে। আমার কলিগের পুল-রিকুয়েস্ট যেন একটা এক্সট্রা  স্পেস কিংবা এক্সট্রা নিউ লাইনের জন্য ঝুলে না থাকে। ল্যাঙ্গুয়েজ স্পেসিফিক বেস্ট প্র্যাকটিস যেন আমরা আরেকটা টুলসের মাধ্যমে নিশ্চিত করতে পারি।</p>
+
+<p>তাছাড়া ডেভলপাররাও বিভিন্ন সময় ভুল করে- সেই ভুল হতে পারে ডেভলপমেন্ট/মাস্টার ব্রাঞ্চে ভুল করে কমিট করা, কোন একটা লার্জ ফাইল গিট ইগ্নোর না করায় তা কমিট হয়ে যাওয়া, গিট পুশ করার আগে ইউনিট টেস্টগুলো সব পাস হচ্ছে নাকি তা চেক না করেই পুল-রিকুয়েস্ট ক্রিয়েট করে ফেলা।</p>
+
+<p>এইসব বিভিন্ন ধরনের চেকিং আমরা চাইলে আমাদের কমিট করার আগে করতে পারি। সেটার জন্যই আমরা আজকে একটা পাইথন প্রজেক্টে pre-commit hook কিভাবে ব্যবহার করতে হয় তা দেখবো।</p>
+
+<h2 id="pre-commit-প্যাকেজ-ইন্সটলেশন">
+<a class="anchor" href="#pre-commit-%E0%A6%AA%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%95%E0%A7%87%E0%A6%9C-%E0%A6%87%E0%A6%A8%E0%A7%8D%E0%A6%B8%E0%A6%9F%E0%A6%B2%E0%A7%87%E0%A6%B6%E0%A6%A8" aria-hidden="true"><span class="octicon octicon-link"></span></a>pre-commit প্যাকেজ ইন্সটলেশন</h2>
+
+<p>আমাদের প্রজেক্টে প্রথমে pre-commit পাইথন প্যাকেজ ইন্সটল করতে হবে, এবং এই প্যাকেজ ব্যবহার করে আমরা pre-commit ও pre-push - git hooks ইন্সটল করবো।</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pip</span> <span class="n">install</span> <span class="n">pre</span><span class="o">-</span><span class="n">commit</span>
+<span class="n">pre</span><span class="o">-</span><span class="n">commit</span> <span class="n">install</span> <span class="o">--</span><span class="n">hook</span><span class="o">-</span><span class="nb">type</span> <span class="n">pre</span><span class="o">-</span><span class="n">commit</span> <span class="o">--</span><span class="n">hook</span><span class="o">-</span><span class="nb">type</span> <span class="n">pre</span><span class="o">-</span><span class="n">push</span>
+</code></pre></div></div>
+<p>এই pre-commit প্যাকেজকে আমরা requirements.dev.text তেও এড করে দিবো, কারণ এই প্যাকেজটা শুধু ডেভলপমেন্টের সময় লাগবে।</p>
+
+<h2 id="pre-commit-configyaml--এর-মাধ্যমে-কনফিগারেশন">
+<a class="anchor" href="#pre-commit-configyaml--%E0%A6%8F%E0%A6%B0-%E0%A6%AE%E0%A6%BE%E0%A6%A7%E0%A7%8D%E0%A6%AF%E0%A6%AE%E0%A7%87-%E0%A6%95%E0%A6%A8%E0%A6%AB%E0%A6%BF%E0%A6%97%E0%A6%BE%E0%A6%B0%E0%A7%87%E0%A6%B6%E0%A6%A8" aria-hidden="true"><span class="octicon octicon-link"></span></a>.pre-commit-config.yaml -এর মাধ্যমে কনফিগারেশন</h2>
+
+<p>এখন আসি, কিভাবে আমাদের pre-commit hook কে কনফিগার করবো। .pre-commit-config.yaml ফাইলে আমরা আমাদের প্রয়োজন অনুযায়ী কনফিগারশন করবো, আর সেটিকে প্রজেক্ট রুটে রাখবো। নিম্নে আমার একটা টয় প্রজেক্টের .pre-commit-config.yaml ফাইল দেয়া হলো -</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">repos</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">repo</span><span class="pi">:</span> <span class="s">https://github.com/pre-commit/pre-commit-hooks</span>
+    <span class="na">rev</span><span class="pi">:</span> <span class="s">v3.4.0</span>
+    <span class="na">hooks</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">trailing-whitespace</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">check-added-large-files</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">no-commit-to-branch</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">check-yaml</span>      
+  <span class="pi">-</span> <span class="na">repo</span><span class="pi">:</span> <span class="s">https://gitlab.com/pycqa/flake8</span>
+    <span class="na">rev</span><span class="pi">:</span> <span class="s">3.8.4</span>
+    <span class="na">hooks</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">flake8</span>    
+      <span class="na">stages</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">commit</span><span class="pi">]</span>
+  <span class="pi">-</span> <span class="na">repo</span><span class="pi">:</span> <span class="s">https://github.com/pre-commit/mirrors-mypy</span>
+    <span class="na">rev</span><span class="pi">:</span> <span class="s">v0.812</span>
+    <span class="na">hooks</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">mypy</span>
+      <span class="na">additional_dependencies</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">tokenize-rt==3.2.0</span><span class="pi">]</span>
+      <span class="na">stages</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">commit</span><span class="pi">]</span>
+  <span class="pi">-</span> <span class="na">repo</span><span class="pi">:</span> <span class="s">local</span>
+    <span class="na">hooks</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">tests</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">run tests</span>
+      <span class="na">entry</span><span class="pi">:</span> <span class="s">pytest -v</span>
+      <span class="na">language</span><span class="pi">:</span> <span class="s">system</span>
+      <span class="na">always_run</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">types</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">python</span><span class="pi">]</span>
+      <span class="na">stages</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<h3 id="pre-commit-hooks">
+<a class="anchor" href="#pre-commit-hooks" aria-hidden="true"><span class="octicon octicon-link"></span></a>pre-commit-hooks</h3>
+
+<p>প্রথম যে রিপোটা আমরা ব্যবহার করছি তা হলো <code class="language-plaintext highlighter-rouge">pre-commit-hooks</code>, এ আমাদেরকে বেশকিছু চেকিং এবং ফিক্সিং আউট-অফ-দা-বক্স সাপোর্ট দেয়। যেমন, আমাদের ফাইলে খেয়াল করলে hooks এর নিচে দেখতে পাচ্ছি প্রথম id হলো <code class="language-plaintext highlighter-rouge">trailing-whitespace</code> , যেটা আমার কোডের প্রতি লাইনের শেষের এক্সট্রা স্পেসগুলি রিমুভ করে দিবে এবং সেক্ষেত্রে আপনার কমিট ফেইল করবে। আমাদেরকে তখন নতুন করে স্পেসিফিক ফাইলকে স্টেজ করে কমিট করতে হবে, কারণ প্রয়োজনীয় চেঞ্জ আমাকে করে দিয়েছি এই hook । এরপরের আইডি হলো- <code class="language-plaintext highlighter-rouge">check-added-large-files</code>, এর ডিফল্ট ভ্যালু  ৫০০ KB দেয়া। এর চেয়ে বড় ফাইল আপনি কমিট করতে চাইলে, সেটা এই চেকিং এ ধরা পড়বে এবং আপনি কমিট করতে পারবেন না। <code class="language-plaintext highlighter-rouge">no-commit-to-branch</code> এটা দিয়ে আমি নিশ্চিত করতে পারবো কেউ যেন সরাসরি মাস্টার ব্রাঞ্চে কমিট করতে না পারে(আর্গুমেন্ট দিয়ে আমরা অন্য ব্রাঞ্চও কনফিগার করতে পারবো।),  <code class="language-plaintext highlighter-rouge">check-yaml</code> আইডি দিয়ে আমরা yaml ফাইলের ফরম্যাটিং চেক করতে পারবো। আরও জানার জন্য গিটহাব রিপো দেখুন - <a href="https://github.com/pre-commit/pre-commit-hooks">pre-commit-hooks</a></p>
+
+<h3 id="flake8">
+<a class="anchor" href="#flake8" aria-hidden="true"><span class="octicon octicon-link"></span></a>flake8</h3>
+<p>এরপরে পাইথনে স্টাইল গাইড ফলো করার জন্য আমরা <code class="language-plaintext highlighter-rouge">flake8</code> রিপো ব্যবহার করবো, যে পাইথন ফাইলগুলো আমি কমিট করতে চাচ্ছি সেগুলো সকল স্টাইলিং গাইড মেইনটেইন করছে কি-না, না করলে কোন ফাইলের কোথায় ইস্যু সেটা বলে দিবে। আর এখানে আমরা stages এ বলে দিচ্ছি - <strong>commit</strong>, যেন শুধু <em>git commit</em> এর সময়ই এই চেকিং টা হয়। flake8 সম্পর্কে জানার জন্য তাদের গিটহাব রিপো দেখুন - <a href="https://github.com/PyCQA/flake8">flake8 - Github</a></p>
+
+<h3 id="mypy">
+<a class="anchor" href="#mypy" aria-hidden="true"><span class="octicon octicon-link"></span></a>mypy</h3>
+<p>তৃতীয়ত আসছে mypy, পাইথনের টাইপ চেকিং এর জন্য। এই প্যাকেজের নিজস্ব কোন ডিপেন্ডেন্সি থাকলে সেটাও আমরা উল্লেখ করে দিতে পারি <code class="language-plaintext highlighter-rouge">additional_dependencies</code> এর মাধ্যমে। mypy সম্পর্কে জানার জন্য তাদের ডকুমেন্টেশন পেজ দেখুন - <a href="https://mypy.readthedocs.io/en/stable/introduction.html">Mypy Introduction</a></p>
+
+<h3 id="tests">
+<a class="anchor" href="#tests" aria-hidden="true"><span class="octicon octicon-link"></span></a>tests</h3>
+<p>সর্বশেষে আসছে, ইউনিট টেস্ট রান করা। আমি আমার ইউনিট টেস্ট রান করতে চাই <em>git push</em> করার সময়ে, সে জন্য এখানে আমার <code class="language-plaintext highlighter-rouge">stages</code> এ শুধু <strong>push</strong> বলা আছে। আর <strong>pytest</strong> এর মাধ্যমে আমার টেস্ট রান করতে বলছি <code class="language-plaintext highlighter-rouge">entry</code> তে। <code class="language-plaintext highlighter-rouge">always_run</code> ব্যবহার করে আমরা বলে দিচ্ছি যেন সবসময় <strong>push</strong> করার আগে টেস্ট ফাইলগুলো রান করে।</p>
+
+<h3 id="উদাহরণ">
+<a class="anchor" href="#%E0%A6%89%E0%A6%A6%E0%A6%BE%E0%A6%B9%E0%A6%B0%E0%A6%A3" aria-hidden="true"><span class="octicon octicon-link"></span></a>উদাহরণ</h3>
+<p>আমি আমার প্রজেক্টের <em>requirements.txt</em> থেকে একটা প্যাকেজ রিমুভ করে দিয়ে, একটা কমিট করি। যেহেতু এটা পাইথন ফাইল না, পাইথন স্পেসিফিক হুকগুলো এখানে রান করে নি। 
+<img src="/jabers-blog/images/git-commit.png" alt="" title="pre-commit hooks executing during commit."></p>
+
+<p>পরবর্তীতে আমি এই চেঞ্জ যখন push করি তখন কমিট স্পেসিফিক চেকিং গুলো হয় নি, আর push এর সময় টেস্ট রান করতে বলেছিলাম সেই টেস্ট রান হয়েছে।
+<img src="/jabers-blog/images/git-push.png" alt="" title="pre-commit hooks executing during push."></p>
+
+<h2 id="resources">
+<a class="anchor" href="#resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources:</h2>
+
+<ul>
+  <li>
+    <p><a href="https://ljvmiranda921.github.io/notebook/2018/06/21/precommits-using-black-and-flake8/">Automate Python workflow using pre-commits: black and flake8</a></p>
+  </li>
+  <li>
+    <p><a href="https://github.com/pre-commit/pre-commit-hooks">pre-commit-hooks</a></p>
+  </li>
+  <li>
+    <p><a href="https://pre-commit.com/hooks.html">Supported hooks</a></p>
+  </li>
+  <li>
+    <p><a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks">Customizing Git - Git Hooks</a></p>
+  </li>
+  <li>
+    <p><a href="https://pre-commit.com/">pre-commit</a></p>
+  </li>
+  <li>
+    <p><a href="https://luminousmen.com/post/my-unpopular-opinion-about-black-code-formatter">My unpopular opinion about black code formatter</a></p>
+  </li>
+</ul>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="jabertuhin/jabers-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/jabers-blog/pre-commit%20hook/git/python/bangla/2021/03/13/pre-commit-hook-in-python.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jabers-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/jabers-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/jabers-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>ML Enthusiast</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/mir-mohammad-jaber" title="mir-mohammad-jaber"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

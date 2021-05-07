@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>ওভারফিটিং, আন্ডারফিটিং [মেশিন লার্নিং টুকিটাকি] | Jaber’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="ওভারফিটিং, আন্ডারফিটিং [মেশিন লার্নিং টুকিটাকি]" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Understanding underfitting and overfitting in ML" />
+<meta property="og:description" content="Understanding underfitting and overfitting in ML" />
+<link rel="canonical" href="https://jabertuhin.github.io/jabers-blog/machine%20learning/2019/09/06/overfitting-underfitting.html" />
+<meta property="og:url" content="https://jabertuhin.github.io/jabers-blog/machine%20learning/2019/09/06/overfitting-underfitting.html" />
+<meta property="og:site_name" content="Jaber’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-09-06T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://jabertuhin.github.io/jabers-blog/machine%20learning/2019/09/06/overfitting-underfitting.html","@type":"BlogPosting","headline":"ওভারফিটিং, আন্ডারফিটিং [মেশিন লার্নিং টুকিটাকি]","dateModified":"2019-09-06T00:00:00-05:00","datePublished":"2019-09-06T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://jabertuhin.github.io/jabers-blog/machine%20learning/2019/09/06/overfitting-underfitting.html"},"description":"Understanding underfitting and overfitting in ML","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/jabers-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://jabertuhin.github.io/jabers-blog/feed.xml" title="Jaber's Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-170132741-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-170132741-2');
+</script>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/jabers-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/jabers-blog/">Jaber&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/jabers-blog/about/">About Me</a><a class="page-link" href="/jabers-blog/search/">Search</a><a class="page-link" href="/jabers-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">ওভারফিটিং, আন্ডারফিটিং [মেশিন লার্নিং টুকিটাকি]</h1><p class="page-description">Understanding underfitting and overfitting in ML</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2019-09-06T00:00:00-05:00" itemprop="datePublished">
+        Sep 6, 2019
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      5 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#Machine Learning">Machine Learning</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+</ul><p>অগা-মগা-বগা তিন ঘনিষ্ট বন্ধু। ওয়াহিদ স্যার ওদের ক্লাসের গণিতের শিক্ষক। এর আগের বছরও ওয়াহিদ স্যারকে ওরা গণিত ক্লাসে পেয়েছিল। স্যারের ক্লাসের ধরনের সাথে ওরা বেশ পরিচিতই। স্যার ক্লাসে যেগুলো করায় ঐগুলোই আবার বাড়ির কাজ হিসেবে দেয়। আর প্রতি চ্যাপ্টারে যেই অনুশীলনি থাকে সেগুলো থেকে ক্লাস টেস্টের প্রশ্ন করে। গাইড বই এর সাহায্য নিয়ে অনুশীলনিগুলো খুব সহজেই করা সম্ভব।</p>
+
+<p>ওরা তিন বন্ধুই এইসব জানে, কিন্তু বগার পড়াশোনায় কোন মন নেই। আর গণিত সে একেবারেই পছন্দ করে না। তাই সে ক্লাসে স্যার যখন পড়ায় তখন খাতায় তা তুলে নেয় না, বাড়ির কাজও করে নিয়ে আসে না। তাই ক্লাস-টেস্টেও খারাপ করে।
+আর মগা খুব মনোযোগী ছাত্র, সে স্যারের বলা প্রতিটা কথা পর্যন্ত খাতায় তুলে, সব কাজ ঠিক ঠাক করে। তাই মগা ক্লাস-টেস্টেও ফুল মার্ক পায়।</p>
+
+<p>বাকি থাকে অগা, যে কি-না সব বুঝে বুঝে করতে বধ্য-পরিকর। না বুঝে একটা অংকও সে করতে রাজী না। স্যারের কথা মনোযোগ দিয়ে শুনে, কোন লাইনের পরে কোন লাইন কেন লিখা হচ্ছে তা চিন্তা করে। বাড়ির কাজ পুরো শেষ করতে না পারলেও যতোটুকু করে নিজে বুঝে বুঝে করে। ক্লাস-টেস্টে মগার মতো ফুল-মার্ক না পেলেও খারাপ করে না।</p>
+
+<p>এভাবেই তারা ছয় মাস পাড় করে দিলো, এবার সামনে প্রথম সাময়িক পরীক্ষা। স্কুলের নতুন নিয়ম অনুযায়ী পরীক্ষার প্রশ্ন সব গণিত শিক্ষকের কাছ থেকে নিয়ে সম্মিলিতভাবে করা হবে।
+পরীক্ষা ভালো মতো হলো, পরীক্ষা শেষের কয়েকদিন পরই পরীক্ষার খাতা দেয়া হলো। কি মনে হয় কে কেমন করলো এই তিন বন্ধুর মধ্যে?</p>
+
+<p>বগা যে খারাপ করবে তা সবাই বুঝতেই পারছি। মূল প্রশ্নটা হলো – অগা আর মগা কি করলো?
+মগা বেশ খারাপ করেছে, তার মতো ক্লাসের সব কিছুতে ফুল মার্ক পাওয়া একজন ছাত্র কি-না গণিতে ৬০ পেলো। আর অগা কি-না পেলো ৮৫। এর কারণ পরীক্ষার প্রশ্নে বেশকিছু অংক অন্য বই থেকে নেয়া হয়েছিল। যদিও টপিক এক থাকলেও প্রশ্ন কমন পড়ে নি তাই মগা আর সেই প্রশ্নের উত্তরই দিতে পারে নি। আর অগা বুঝে বুঝে পড়েছে বিধায় নতুন প্রশ্ন তার জন্য কোন সমস্যা ছিল না, সে তো বুঝে বুঝেই উত্তর করেছে যতোটুকু পেরেছে।</p>
+
+<p>এবার ফিরে আসি যা বুঝাতে এই গল্পের আবির্ভাব।
+বগার অবস্থাটাকে মেশিন লার্নিং-এ underfitting বলে, মগার অবস্থাকে overfitting এবং অগার অবস্থাটাকে মেশিন লার্নিং এর আদর্শ অবস্থা বলা চলে।</p>
+
+<p>এখন আরেকটু টেকনিকালভাবে বিষয়গুলো বুঝতে চেষ্টা করি –
+মেশিন লার্নিং এর বিভিন্ন স্টেপের মধ্যে একটি স্টেপ হলো – মডেল সিলেকশন। কোন মডেল নিয়ে আমি এগুতে চাই সেটা নির্ধারণ করা। কি দেখে এই সিলেকশনটা করা হয় তা একটু জেনে নিই।</p>
+
+<p>আমাদের কাছে নির্দিষ্ট পরিমাণ ডাটা থাকে যা দিয়ে আমাদের কাজ করতে হয়। যেটা ডাটাসেট নামেই বেশি পরিচিত। এই নির্দিষ্ট সংখ্যক ডাটাসেটের ডাটা পয়েন্ট নিয়েই আমাকে যা করার তা করতে হবে। খুব আদর্শ ধরা হয় – ৬০% ডাটা দিয়ে মডেল ট্রেইন করা, ২০% দিয়ে ক্রস-ভ্যালিডেশন করা আর বাকি ২০% দিয়ে মডেল টেস্ট করা। আমরা মূলত এখন ট্রেইন এর ৬০% আর cross-validation এর ২০% নিয়ে কথা বলবো।</p>
+
+<p>বোঝার সুবিধার্থে ধরি, আমাদের ডাটাসেটে মোট ১০০টা ডাটা পয়েন্ট আছে। যার ৬০ টা দিয়ে আমি ট্রেইন করাবো, আর ২০ টা দিয়ে ক্রস-ভ্যালিডেশন করবো।
+m = training set size = 60
+আর দুইটা মডেল ধরি, model1 এবং model2.</p>
+
+<p>আমরা প্রথমে মডেলকে ১ টি ডাটা পয়েন্ট দিয়ে ট্রেইন করবো, এরপর ক্রস ভ্যালিডেশনে তার পার্ফরমেন্স দেখবো। এরপর ২-টি ডাটা পয়েন্ট দিয়ে, ৩-টি দিয়ে, এভাবে ৬০-টি ডাটা পয়েন্ট দিয়ে আমরা মডেলকে ট্রেইন করবো। আমরা এখানে মূলত আমাদের ডাটাসেটে মডেল কি ধরনের আচরন করে তা দেখতে চাচ্ছি, যার জন্য এভাবে ভেঙ্গে ভেঙ্গে কাজ করছি।
+ট্রেইনিং এর পরে উক্ত মডেল কতটা ভালোভাবে কাজ করছে তা দেখার জন্য ক্রস ভ্যালিডেশন ব্যবহার করা হয়। সেই আলাদা করে রাখা ২০ টা ডাটা পয়েন্ট। এর মধ্যে কতটা সঠিক উত্তর দিতে পারছে আর কতটা ভুল সেটার শতকরা প্রকাশ হলো cv_error।</p>
+
+<p>এখানে খেয়াল করার বিষয় আমরা ট্রেইন করার জন্য ধীর ধীরে ডাটা পয়েন্ট বাড়াচ্ছি কিন্তু ক্রস ভ্যালিডেশনের সাইজ সবসময় ফিক্সড থাকবে যা কি-না ২০।</p>
+
+<p>এখন মেশিন লার্নিং এর ক্ষেত্রে আমরা কি করি কিংবা কি চাই? আমরা মেশিনকে কিছু একটা শিখিয়ে পরবর্তীতে দেখতে চাই সে কতটুকু শিখলো? কতটুকু ঠিকভাবে সে প্রেডিক্ট করতে পারছে। আমরা শতকরা হিসেবে তা প্রকাশ করে থাকি। ৮৫% একুরেসি মানে ১০০ বারের মধ্যে সে ৮৫ বার সঠিক উত্তর দিচ্ছে আর বাকি ১৫ বার ভুল উত্তর দিচ্ছে।
+আমরা এখন তার এই ভুল করার ব্যাপারটা গ্রাফের মাধ্যমে দেখি সাথে দুইটা নতুন টার্মস এর সাথেও পরিচিত হবো(bias and variance)।
+Model1 এর ক্ষেত্রে নিম্নোক্ত গ্রাফটি পাই –</p>
+
+<p><img src="/jabers-blog/images/underfit.jpg" alt="_config.yml"></p>
+
+<p>এই ধরনের গ্রাফকে লার্নিং কার্ভ বলা হয়। ট্রেইনিং ডাটা এর ক্ষেত্রে মডেল যে ইরোর দেয় সেটা training_error এবং cross validation এর সময় যে ইরোর দেয় সেটা cv_error. X – axis রিপ্রেজেন্ট করছে যে পরিমাণ ডাটা দিয়ে আমি আমার মডেলকে ট্রেইন করছি তা(১ – ৬০ পর্যন্ত যে ধীরে ধীরে যাচ্ছি) এবং Y-axis রিপ্রেজেন্ট করছে ইরোরের পরিমাণকে(কতটুকু ভুল করছে)।</p>
+
+<p>Model1 এর ক্ষেত্রে যতো বেশি ডাটা দিয়ে ট্রেইন করছি ততো বেশি ইরোর পাচ্ছি এবং cv_error আগের থেকে কমলেও ট্রেইনিং ইরোরের খুব কাছে। তার মানে দুই-ক্ষেত্রেই অনেক বেশি ইরোর দিচ্ছে। গল্পের বগার মতো ক্লাসেও খারাপ করছে আবার পরীক্ষাতেও খারাপ করছে। training_error এর উঠতি মানকে High Bias বলা হয়।
+Model2 এর ক্ষেত্রে নিম্নোক্ত গ্রাফটি পাই –</p>
+
+<p><img src="/jabers-blog/images/overfit.jpg" alt="_config.yml"></p>
+
+<p>এখানে দেখতে পাচ্ছি training_error এর তুলনায় cv_error যথেষ্ট বেশি। যা বুঝাচ্ছে মগার মতো ক্লাসে খুবই ভালো রেজাল্ট করছে কিন্তু নতুন কোন প্রশ্ন একটু ঘুরিয়ে দিলেই আর পারছে না। এইখানে আরেকটা বিষয় লক্ষ্য করার তা হলো দুইটা ইরোরের মধ্যবর্তী ফাঁকা জায়গাটা, যা বেশ অসামঞ্জস্যপূর্ণ। cv_error এর মান training_error এর তুলনায় এতো বেশি হওয়াকে High Variance বলা বলা হয়।</p>
+
+<p>Bias-Variance Trade-off বলে একটা কথা আছে, যার মাধ্যমে আমরা মডেল সিলেক্ট করে থাকি। Low bias যেখানে থাকবে সেখানে high variance থাকবে এবং যেখানে High bias থাকবে সেখানে Low Variance থাকবে। সবসময় চেষ্টা করা হয় যথাসম্ভব low bias রেখে variance ও low রাখার। কিন্তু দুইটাকেই একত্রে কমিয়ে রাখা সম্ভব না। এসবক্ষেত্রে একটু ছাড় দিয়ে এগুতে হয়। অনেকটা অগা-এর মতো, সব পড়ে সে শেষ করতে পারতো না। কিন্তু যা পড়তো বুঝে বুঝে পড়তো, পরীক্ষায় কিন্তু সে ১০০ পায় নি কিন্তু যথেষ্ট ভালো পেয়েছিল(৮৫)।</p>
+
+<p>৬ থেকে ৭ টা মডেলের মধ্য থেকে যদি আমাকে একটা বাছাই করতে হয়, তখন আমি সেটাকেই বাছাই করবো যার লার্নিং কার্ভ দেখে বুঝতে পারবো সেখানে overfitting কিংবা underfitting এর সম্ভাবনা যথাসম্ভব কম। ভালো মডেলটাই তো টেস্ট সেটে ভালো উত্তর দিতে পারবে, তখনই কেবল তাকে দিয়ে কাজ করানো সম্ভব বাস্তব জগতে।</p>
+
+<p>[ লিখায় কোন ভুল-ত্রুটি থাকলে মন্তব্যে তা ধরিয়ে দিবেন আশা করি। ধন্যবাদ ]</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="jabertuhin/jabers-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/jabers-blog/machine%20learning/2019/09/06/overfitting-underfitting.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jabers-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/jabers-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/jabers-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>ML Enthusiast</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/mir-mohammad-jaber" title="mir-mohammad-jaber"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

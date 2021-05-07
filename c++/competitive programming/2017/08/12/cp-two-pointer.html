@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>টু পয়েন্টার, Two Pointer (Lec - 2.1) | Jaber’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="টু পয়েন্টার, Two Pointer (Lec - 2.1)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Learn about two pointers." />
+<meta property="og:description" content="Learn about two pointers." />
+<link rel="canonical" href="https://jabertuhin.github.io/jabers-blog/c++/competitive%20programming/2017/08/12/cp-two-pointer.html" />
+<meta property="og:url" content="https://jabertuhin.github.io/jabers-blog/c++/competitive%20programming/2017/08/12/cp-two-pointer.html" />
+<meta property="og:site_name" content="Jaber’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-08-12T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://jabertuhin.github.io/jabers-blog/c++/competitive%20programming/2017/08/12/cp-two-pointer.html","@type":"BlogPosting","headline":"টু পয়েন্টার, Two Pointer (Lec - 2.1)","dateModified":"2017-08-12T00:00:00-05:00","datePublished":"2017-08-12T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://jabertuhin.github.io/jabers-blog/c++/competitive%20programming/2017/08/12/cp-two-pointer.html"},"description":"Learn about two pointers.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/jabers-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://jabertuhin.github.io/jabers-blog/feed.xml" title="Jaber's Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-170132741-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-170132741-2');
+</script>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/jabers-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/jabers-blog/">Jaber&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/jabers-blog/about/">About Me</a><a class="page-link" href="/jabers-blog/search/">Search</a><a class="page-link" href="/jabers-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">টু পয়েন্টার, Two Pointer (Lec - 2.1)</h1><p class="page-description">Learn about two pointers.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2017-08-12T00:00:00-05:00" itemprop="datePublished">
+        Aug 12, 2017
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      5 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#C++">C++</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#Competitive Programming">Competitive Programming</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>আমরা প্রত্যেকেই ছোটবেলায় একটা গল্প শুনেছি অথবা পড়েছি। দুই ইঁদুর আর এক বানরের। গল্পটা অনেকটা এইরকম যতদূর মনে পড়ে-</p>
+
+<p>দুই বানর একটা রুটি চুরি করে। এখন দুইজনে সমান দুই ভাগ করে যে রুটিটা খাবে সেটা আর পারছে না। তাদের পাশ দিয়ে হঠাৎ করে একটা বানর যাচ্ছিল। তারা ঠিক করলো বানরকে দিয়ে রুটিটা দুই ভাগ করাবে।  বানর খুশি খুশিই রাজী হয়ে গেলো। প্রথমে রুটিটাকে দুই ভাগ করলো এরপর দেখলো একপাশে একটু বেশি আছে। সেইপাশ থেকে অল্প একটু ছিড়ে খেয়ে ফেললো। এরপর দেখলো আরেক পাশের রুটি এখন একটু বেশি মনে হচ্ছে। এরপর সেই অংশ থেকে রুটি একটু ছিড়ে খেয়ে ফেললো।</p>
+
+<p>যাদের গল্পের বাকি অংশ জানার ইচ্ছা গুগল করে জেনে নিয়ো :P আমার যতটুকু প্রয়োজন ততোটুকু বলে ফেলেছি।</p>
+
+<p>জিনিসটা হচ্ছে ব্যালেন্সিং করা। কোন পাশে কমে গেলে আরেক পাশ থেকে একটু কমিয়ে আনা। বা কোন অংশে বেড়ে গেলে আরেক পাশকে বাড়ানোর চেষ্টা করা। যেমন বাজারে ১ কেজি চাল কিনতে গেলে প্রথমে পাল্লার এক পাশে এক কেজির বাটখাড়া রাখা হয় এরপর অন্য পাশে চাল ওজন করা হয়। প্রয়োজনের চেয়ে বেশি চাল উঠলে কমানো হয় আবার কম উঠলে আরো কিছু চাল এনে দেয়া হয়।</p>
+
+<p>“টু পয়েন্টার” হলো একটা টেকনিক। সাধারণত একটি বিশেষ জোড়া বের করার জন্য ব্যবহৃত হয়।</p>
+
+<p>উদাহরণ দিয়ে একটু বুঝার চেষ্টা করি।</p>
+
+<p>4 এর সমান অথবা 4  হতে বড় যেকোন সংখ্যাকে দু’টি প্রাইম নাম্বারের যোগফল রূপে প্রকাশ করা সম্ভব।</p>
+
+<p>4 = 2 + 2</p>
+
+<p>5 = 2 + 3</p>
+
+<p>6 = 3 +3</p>
+
+<p>7 = 2 + 5</p>
+
+<p>8 = 3 + 5</p>
+
+<p>9 = 2 + 7</p>
+
+<p>10 = (3+7) or (5 + 5)</p>
+
+<p>আমাকে যদি কোন নাম্বার দিয়ে বলা হয় যে সেই নাম্বারকে দু’টি প্রাইম নাম্বারের যোগফল রূপে দেখাতে (উপরের উদাহরণের মতো) সেক্ষেত্রে আমরা Two Pointer টেকনিক ব্যবহার করতে পারি।</p>
+
+<p>[এখানে প্রাইম নাম্বার নিয়ে চিন্তা করাটা মূল ব্যাপার না। মূল ব্যাপার হচ্ছে এই যোগফলটা কিভাবে বের করা সম্ভব]</p>
+
+<p>Two pointer টেকনিক ব্যবহার করার আগে এরেকে(যেখান থেকে আমি কোন তথ্য চাচ্ছি । উপরের উদাহরনে যেমন প্রাইম নাম্বারের একটা এরে থেকে) সেটা সোর্টেড হতে হবে। নাহলে কমানো বা বাড়ানোর কাজটা ঠিক করা যাবে না।</p>
+
+<p>উপরের প্রবলেমের কোডটা নিচে দেয়া হলো-</p>
+
+<p><img src="/jabers-blog/images/two-pointer.jpg" alt="_config.yml" /></p>
+
+<p>এখানে primeNum এর একটা এরে নিলাম আমরা প্রথমে (যেখানে সবকয়টা প্রাইম নাম্বার রাখা)। এরপর ইউজারের কাছ থেকে একটা ইনপুট নিবো যেটাকে আমার দু’টো প্রাইম নাম্বারের সমষ্টি রূপে দেখাতে হবে।</p>
+
+<p>এরেতে খেয়াল করলে দেখবো নাম্বারগুলো ছোট থেকে বড় আকারে সাজানোই আছে।</p>
+
+<p>এবার আমার দুইটা পয়েন্টার লাগবে। যে জিনিস দিয়ে আমি ওজন (এক্ষেত্রে যোগফল) বাড়ানো কমানোর কাজটা করবো।</p>
+
+<p>left এবং right দুইটা ভেরিয়েবল নিলাম। left এর ভ্যালু 0 অর্থাৎ সবচেয়ে ছোট প্রাইম নাম্বারকে যে পয়েন্ট করে থাকবে। আর right এর ভ্যালু 9 (length or size of the array) সবচেয়ে বড় প্রাইম নাম্বারটাকে পয়েন্ট করে থাকবে।</p>
+
+<p>এই ভেরিয়েবল দুটি আদতে এরের index এর ভ্যালু হোল্ড করে। যেটাকে আমরা বলছি এরেতে ছোট কিংবা বড় ভ্যালুকে পয়েন্ট করে থাকে।</p>
+
+<p>এরপরেই একটা লুপ চালাচ্ছি যতক্ষণ পর্যন্ত left  এর মান right এর ছোট থাকবে অথবা সমান হবে ততক্ষণ পর্যন্ত লুপটা চালিয়ে আমি আমার কাঙ্ক্ষিত প্রাইম যুগল বের করার চেষ্টা করবো।</p>
+
+<p>একটা ইনপুটের জন্য লুপটা চালিয়ে দেখি। ধরলাম ইনপুট 10</p>
+
+<p>১ম বার =&gt;</p>
+
+<p>left = 0, right = 9</p>
+
+<p>sum = primeNum[0] + primeNum[9]  = 2 + 29 = 31</p>
+
+<p>এই ৩১ ভ্যালুটা কি আমার কাঙ্ক্ষিত ভ্যালু ১০ এর সমান? না , তাহলে  বড় না ছোট?</p>
+
+<p>১০ থেকে ৩১ বড়।</p>
+
+<p>তাহলে আমাকে এমনকিছু করতে হবে যেন পরেরবার ভ্যালুটা ১০ এর কাছাকাছি যায়। মানে ৩১ এর থেকে কম আসে। আমার right পয়েন্ট করে আছে সবচেয়ে বড় ভ্যালুকে আর let ছোট ভ্যালুকে। দুইটার যোগফল ছোট করার জন্য আমাড় কি করা দরকার? right এখন যাকে পয়েন্ট করে আছে তার চেয়ে ছোট ভ্যালুকে যেন এরপরেরবার পয়েন্ট করে। সুতরাং right- -, right এর ভ্যালু এক কমে 8 এখন।</p>
+
+<p>২য় বার =&gt;</p>
+
+<p>left = 0, right = 8</p>
+
+<p>sum = primeNum[0] + primeNum[8]  = 2 + 23 = 25</p>
+
+<p>এইবারও যোগফল ১০ এর থেকে বেশি right এর মান আবার কমাবো right- -, right = 7।</p>
+
+<p>৩য় বার =&gt;</p>
+
+<p>left = 0, right = 7</p>
+
+<p>sum = primeNum[0] + primeNum[7]  = 2 + 19 = 21</p>
+
+<p>এইবারও যোগফল ১০ এর থেকে বেশি right এর মান আবার কমাবো right- -, right = 6।</p>
+
+<p>৪র্থ বার =&gt;</p>
+
+<p>left = 0, right = 6</p>
+
+<p>sum = primeNum[0] + primeNum[6]  = 2 + 17 = 19</p>
+
+<p>এইবারও যোগফল ১০ এর থেকে বেশি right এর মান আবার কমাবো right- -, right = 5।</p>
+
+<p>৫ম বার =&gt;</p>
+
+<p>left = 0, right = 5</p>
+
+<p>sum = primeNum[0] + primeNum[5]  = 2 + 13 = 15</p>
+
+<p>এইবারও যোগফল ১০ এর থেকে বেশি right এর মান আবার কমাবো right- -, right = 4।</p>
+
+<p>৬ষ্ঠ বার =&gt;</p>
+
+<p>left = 0, right = 4</p>
+
+<p>sum = primeNum[0] + primeNum[4]  = 2 + 11 = 13</p>
+
+<p>এইবারও যোগফল ১০ এর থেকে বেশি right এর মান আবার কমাবো right- -, right = 3।</p>
+
+<p>৭ম বার =&gt;</p>
+
+<p>left = 0, right = 3</p>
+
+<p>sum = primeNum[0] + primeNum[4]  = 2 + 7 = 9</p>
+
+<p>এইবার কিন্তু যোগফল ১০ এর থেকে ছোট হয়ে গেলো । এখন এমন কিছু করতে হবে যেন যোগফলটা বাড়ে । যেহেতু যোগফলটা ১০ এর চেয়ে ছোট । এই বাড়ানোর জন্য আমার এখন সবচেয়ে ছোট ভ্যালুটা চেঞ্জ করতে হবে । সুতরাং left এখন যাকে পয়েন্ট করে আছে পরে যেন তার থেকে বড় কাউকে পয়েন্ট করে । left++, left = 1 হয়ে গেলো এখন</p>
+
+<p>৮ম বার =&gt;</p>
+
+<p>left = 1, right = 3</p>
+
+<p>sum = primeNum[1] + primeNum[4]  = 3 + 7 =  10</p>
+
+<p>টাডা, 10 পেয়ে গেলাম । এবার যেহেতু আমার কাঙ্ক্ষিত নাম্বার পেয়ে গেছি। লুপ ব্রেক করে বাহিরে চলে আসছি আমি।</p>
+
+<p>আর left আর right এর কাছে যেহেতু এরের ইন্ডেক্সের মান আছে সেহেতু পরে তা সরাসরি প্রিন্ট করে দিচ্ছি। আউটপুট দেখতে অনেকটা এই রকম হবে-</p>
+
+<blockquote>
+  <p>stdin</p>
+</blockquote>
+
+<p>10</p>
+
+<blockquote>
+  <p>stdout</p>
+</blockquote>
+
+<p>10 = 3+7</p>
+
+<p>[ উদাহরণে লুপের কন্ডিশনটা আলাদা করে চেক করে অহেতুক লিখা বড় করা হয় নি । যেহেতু লুপ চলছে প্রতিবারই কিন্তু কন্ডিশন চেক হচ্ছে । আর left কিন্তু সবসময়ই right এর থেকে ছোট ছিল ]</p>
+
+<p><strong>Practice Problem:</strong></p>
+
+<p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=24&amp;page=show_problem&amp;problem=1998">11057 - Exact Sum</a></p>
+
+<p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=24&amp;page=show_problem&amp;problem=484">543 - Goldbach’s Conjecture</a> (এইটা সলভ করার জন্য আগে প্রাইম নাম্বার জেনারেট করা শিখতে হবে)</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="jabertuhin/jabers-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/jabers-blog/c++/competitive%20programming/2017/08/12/cp-two-pointer.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jabers-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/jabers-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/jabers-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>ML Enthusiast</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/mir-mohammad-jaber" title="mir-mohammad-jaber"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
