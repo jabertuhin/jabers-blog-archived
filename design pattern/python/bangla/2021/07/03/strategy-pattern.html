@@ -195,7 +195,7 @@ window.onload = wrap_img;
     <span class="k">def</span> <span class="nf">bat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
         <span class="s">"""Implementation of Tamim's batting."""</span>
 
-    <span class="k">def</span> <span class="nf">bowl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">bowl</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
         <span class="s">"""Implementation of Tamim's bowling."""</span>
 </code></pre></div></div>
 <p>একজন ওপেনিং ব্যাটসম্যানের পরে এখন আমরা একজন বোলার, মুস্তাফিজুর রহমানের ক্লাস অনুরূপভাবে তৈরি করতে পারি।</p>
@@ -207,7 +207,7 @@ window.onload = wrap_img;
     <span class="k">def</span> <span class="nf">bat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
         <span class="s">"""Implementation for Mustafizur's batting."""</span>
 
-    <span class="k">def</span> <span class="nf">bowl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">bowl</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
         <span class="s">"""Implementation for Mustafizur's bowling."""</span>
 </code></pre></div></div>
 <p>এইক্ষেত্রে আমরা যদি তামিম এবং মুস্তাফিজুরের অব্জেক্ট তৈরি করতে চাই, তা খুব সহজেই আমরা করতে পারবো নিম্নোক্তভাবে <img class="emoji" title=":point_down:" alt=":point_down:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f447.png" height="20" width="20"></p>
@@ -274,22 +274,22 @@ window.onload = wrap_img;
 
 <p>Implementations of <code class="language-plaintext highlighter-rouge">IBattingStyle</code></p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LeftHandBatting</span><span class="p">(</span><span class="n">IBattingStyle</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">bat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">bat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
         <span class="s">"""Implementation for Left-hand Batting."""</span>
 
 <span class="k">class</span> <span class="nc">RightHandBatting</span><span class="p">(</span><span class="n">IBattingStyle</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">bat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">bat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
         <span class="s">"""Implementation for Right-hand Batting."""</span>
 </code></pre></div></div>
 <p>এখানে <img class="emoji" title=":point_up_2:" alt=":point_up_2:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f446.png" height="20" width="20"> আমাদের প্রয়োজন হলে <code class="language-plaintext highlighter-rouge">LeftHandAggresiveBatting</code> একটা ইমপ্লিমেন্টেশনও যোগ করতে পারি।</p>
 
 <p>Implementations of <code class="language-plaintext highlighter-rouge">IBowlingStyle</code></p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LeftHandFastBowling</span><span class="p">(</span><span class="n">IBowlingStyle</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">bowl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">bowl</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
         <span class="s">"""Implementation for Left-hand fast bowler."""</span>
 
 <span class="k">class</span> <span class="nc">RightHandFastBowling</span><span class="p">(</span><span class="n">IBowlingStyle</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">bowl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">bowl</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
         <span class="s">"""Implementation for Right-hand fast bowler."""</span>
 </code></pre></div></div>
 <p>আর <img class="emoji" title=":point_up_2:" alt=":point_up_2:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f446.png" height="20" width="20"> এখানে তো আমাদের অবশ্যই <code class="language-plaintext highlighter-rouge">LeftArmOffBreakBowling</code>, <code class="language-plaintext highlighter-rouge">RightArmOffBreakBowling</code> ইমপ্লিমেন্টেশনগুলোর কথা চিন্তা করতেই হবে।</p>
