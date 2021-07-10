@@ -52,7 +52,7 @@ class Tamim(Player):
     def bat(self) -> None:
         """Implementation of Tamim's batting."""
 
-    def bowl(self):
+    def bowl(self) -> None:
         """Implementation of Tamim's bowling."""
 ```
 একজন ওপেনিং ব্যাটসম্যানের পরে এখন আমরা একজন বোলার, মুস্তাফিজুর রহমানের ক্লাস অনুরূপভাবে তৈরি করতে পারি।
@@ -65,7 +65,7 @@ class Mustafizur(Player):
     def bat(self) -> None:
         """Implementation for Mustafizur's batting."""
 
-    def bowl(self):
+    def bowl(self) -> None:
         """Implementation for Mustafizur's bowling."""
 ```
 এইক্ষেত্রে আমরা যদি তামিম এবং মুস্তাফিজুরের অব্জেক্ট তৈরি করতে চাই, তা খুব সহজেই আমরা করতে পারবো নিম্নোক্তভাবে :point_down:
@@ -135,11 +135,11 @@ Player ক্লাসটার কাজ বদলায় নি, কিন্�
 Implementations of `IBattingStyle`
 ```python
 class LeftHandBatting(IBattingStyle):
-    def bat(self):
+    def bat(self) -> None:
         """Implementation for Left-hand Batting."""
 
 class RightHandBatting(IBattingStyle):
-    def bat(self):
+    def bat(self) -> None:
         """Implementation for Right-hand Batting."""
 ```
 এখানে :point_up_2: আমাদের প্রয়োজন হলে `LeftHandAggresiveBatting` একটা ইমপ্লিমেন্টেশনও যোগ করতে পারি। 
@@ -147,11 +147,11 @@ class RightHandBatting(IBattingStyle):
 Implementations of `IBowlingStyle`
 ```python
 class LeftHandFastBowling(IBowlingStyle):
-    def bowl(self):
+    def bowl(self) -> None:
         """Implementation for Left-hand fast bowler."""
 
 class RightHandFastBowling(IBowlingStyle):
-    def bowl(self):
+    def bowl(self) -> None:
         """Implementation for Right-hand fast bowler."""
 ```
 আর :point_up_2: এখানে তো আমাদের অবশ্যই `LeftArmOffBreakBowling`, `RightArmOffBreakBowling` ইমপ্লিমেন্টেশনগুলোর কথা চিন্তা করতেই হবে। 
