@@ -108,7 +108,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      3 min read
+      4 min read
     
 </span></p>
 
@@ -143,9 +143,16 @@ window.onload = wrap_img;
 <li class="toc-entry toc-h3"><a href="#mypy">mypy</a></li>
 <li class="toc-entry toc-h3"><a href="#tests">tests</a></li>
 <li class="toc-entry toc-h3"><a href="#উদাহরণ">উদাহরণ</a></li>
+<li class="toc-entry toc-h3"><a href="#ci-পাইপলাইনে-প্রি-কমিট-হুক-চেকিং">CI পাইপলাইনে প্রি-কমিট হুক চেকিং</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#bitbucket-pipeline-example">Bitbucket Pipeline Example</a></li>
+<li class="toc-entry toc-h4"><a href="#github-action-pipeline-example">Github Action Pipeline Example:</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-entry toc-h2"><a href="#resources">Resources:</a></li>
+<li class="toc-entry toc-h2"><a href="#update-log">UPDATE Log</a></li>
 </ul><p>প্রি-কমিট হুকের সাথে পরিচিতি Vladimir Iglovikov এর ব্লগ <a href="https://towardsdatascience.com/nine-simple-steps-for-better-looking-python-code-87e5d9d3b1cf">Nine simple steps for better-looking python code</a> পোস্টের মাধ্যমে। আমার কাছে খুবই ইন্টারেস্টিং কনসেপ্ট মনে হয়েছে, তাই এই ব্যাপারে একটা ব্লগ লিখা। পাইথন প্রজেক্টের ক্ষেত্রে কিভাবে আমরা pre-commit hook ব্যবহার করতে পারি, তা নিয়েই এই ব্লগ পোস্ট।</p>
 
 <h2 id="কেন-pre-commit-hook-প্রয়োজন">
@@ -226,6 +233,86 @@ window.onload = wrap_img;
 <p>পরবর্তীতে আমি এই চেঞ্জ যখন push করি তখন কমিট স্পেসিফিক চেকিং গুলো হয় নি, আর push এর সময় টেস্ট রান করতে বলেছিলাম সেই টেস্ট রান হয়েছে।
 <img src="/jabers-blog/images/git-push.png" alt="" title="pre-commit hooks executing during push."></p>
 
+<h3 id="ci-পাইপলাইনে-প্রি-কমিট-হুক-চেকিং">
+<a class="anchor" href="#ci-%E0%A6%AA%E0%A6%BE%E0%A6%87%E0%A6%AA%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%A8%E0%A7%87-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%BF-%E0%A6%95%E0%A6%AE%E0%A6%BF%E0%A6%9F-%E0%A6%B9%E0%A7%81%E0%A6%95-%E0%A6%9A%E0%A7%87%E0%A6%95%E0%A6%BF%E0%A6%82" aria-hidden="true"><span class="octicon octicon-link"></span></a>CI পাইপলাইনে প্রি-কমিট হুক চেকিং</h3>
+
+<h4 id="bitbucket-pipeline-example">
+<a class="anchor" href="#bitbucket-pipeline-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bitbucket Pipeline Example</h4>
+<p>Bitbucket পাইপলাইনে মাল্টিপল স্টেপ প্যারালালি রান করা যায়। এর ফলে CI রান করার ওয়েটিং টাইমটা কমিয়ে ফেলা যায়।</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">image</span><span class="pi">:</span> <span class="s">python:3.8</span>
+
+<span class="na">definitions</span><span class="pi">:</span>
+  <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span> <span class="nl">&amp;coverage</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">Running Test</span>
+        <span class="na">size</span><span class="pi">:</span> <span class="s">2x</span>
+        <span class="na">caches</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">pip</span>        
+        <span class="na">script</span><span class="pi">:</span>          
+          <span class="pi">-</span> <span class="s">pip install -r requirements.dev.txt</span>
+          <span class="pi">-</span> <span class="s">pytest</span>
+
+    <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span> <span class="nl">&amp;pre_commit</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">Pre-Commit Hook Checking</span>
+        <span class="na">caches</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">pip</span>        
+        <span class="na">script</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">pip install pre-commit==2.17.0</span>
+          <span class="pi">-</span> <span class="s">pre-commit run --all-files</span>
+
+<span class="na">pipelines</span><span class="pi">:</span>
+  <span class="na">branches</span><span class="pi">:</span>
+    <span class="na">development</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">parallel</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span> <span class="nv">*coverage</span>
+        <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span> <span class="nv">*pre_commit</span>
+
+  <span class="na">pull-requests</span><span class="pi">:</span>
+    <span class="s1">'</span><span class="s">**'</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">parallel</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span> <span class="nv">*coverage</span>
+        <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span> <span class="nv">*pre_commit</span>
+</code></pre></div></div>
+
+<h4 id="github-action-pipeline-example">
+<a class="anchor" href="#github-action-pipeline-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Github Action Pipeline Example:</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Continuous Integration</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">development</span>
+
+  <span class="na">pull_request</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">**"</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Python</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-python@v2</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">python-version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.8'</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install dependencies</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">python -m pip install --upgrade pip</span>
+          <span class="s">make dev_setup</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Test with pytest</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">make test</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Pre-Commit Hook Checking</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">pre-commit run --all-files</span>
+</code></pre></div></div>
+
 <h2 id="resources">
 <a class="anchor" href="#resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources:</h2>
 
@@ -250,15 +337,12 @@ window.onload = wrap_img;
   </li>
 </ul>
 
-  </div><!-- from https://github.com/utterance/utterances -->
-<script src="https://utteranc.es/client.js"
-        repo="jabertuhin/jabers-blog"
-        issue-term="title"
-        label="blogpost-comment"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script><a class="u-url" href="/jabers-blog/pre-commit%20hook/git/python/bangla/2021/03/13/pre-commit-hook-in-python.html" hidden></a>
+<h2 id="update-log">
+<a class="anchor" href="#update-log" aria-hidden="true"><span class="octicon octicon-link"></span></a>UPDATE Log</h2>
+
+<p>[27th January, 2022] Add CI pipeline example for Bitbucket and Github Action.</p>
+
+  </div><a class="u-url" href="/jabers-blog/pre-commit%20hook/git/python/bangla/2021/03/13/pre-commit-hook-in-python.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
@@ -281,7 +365,7 @@ window.onload = wrap_img;
       </div>
     </div>
 
-    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/mir-mohammad-jaber" title="mir-mohammad-jaber"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/jabertuhin" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/jabertuhin" target="_blank" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/mir-mohammad-jaber" target="_blank" title="mir-mohammad-jaber"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/jabertuhin" target="_blank" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
 </div>
 
   </div>
