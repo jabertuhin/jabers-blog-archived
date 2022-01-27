@@ -2,7 +2,7 @@
 layout: post
 title: পাইথনে প্রি-কমিট হুকের সাথে পরিচিতি(Introduction to Pre-commit Hook in Python)
 description: Pre-commit Hook Configuration
-comments: true
+comments: false
 toc: true
 categories: [Pre-commit Hook, Git, Python, Bangla]
 ---
@@ -81,6 +81,89 @@ repos:
 পরবর্তীতে আমি এই চেঞ্জ যখন push করি তখন কমিট স্পেসিফিক চেকিং গুলো হয় নি, আর push এর সময় টেস্ট রান করতে বলেছিলাম সেই টেস্ট রান হয়েছে।
 ![]({{ site.baseurl }}/images/git-push.png "pre-commit hooks executing during push.")
 
+
+### CI পাইপলাইনে প্রি-কমিট হুক চেকিং
+
+
+#### Bitbucket Pipeline Example
+Bitbucket পাইপলাইনে মাল্টিপল স্টেপ প্যারালালি রান করা যায়। এর ফলে CI রান করার ওয়েটিং টাইমটা কমিয়ে ফেলা যায়। 
+```yaml
+image: python:3.8
+
+definitions:
+  steps:
+    - step: &coverage
+        name: Running Test
+        size: 2x
+        caches:
+          - pip        
+        script:          
+          - pip install -r requirements.dev.txt
+          - pytest
+
+    - step: &pre_commit
+        name: Pre-Commit Hook Checking
+        caches:
+          - pip        
+        script:
+          - pip install pre-commit==2.17.0
+          - pre-commit run --all-files
+
+pipelines:
+  branches:
+    development:
+      - parallel:
+        - step: *coverage
+        - step: *pre_commit
+
+  pull-requests:
+    '**':
+      - parallel:
+        - step: *coverage
+        - step: *pre_commit
+```
+
+
+#### Github Action Pipeline Example:
+
+```yaml
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - development
+
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          make dev_setup
+
+      - name: Test with pytest
+        run: |
+          make test
+
+      - name: Pre-Commit Hook Checking
+        run: |
+          pre-commit run --all-files
+```
+
+
 ## Resources:
 
 - [Automate Python workflow using pre-commits: black and flake8](https://ljvmiranda921.github.io/notebook/2018/06/21/precommits-using-black-and-flake8/)
@@ -94,3 +177,8 @@ repos:
 - [pre-commit](https://pre-commit.com/)
 
 - [My unpopular opinion about black code formatter](https://luminousmen.com/post/my-unpopular-opinion-about-black-code-formatter)
+
+
+## UPDATE Log
+
+[27th January, 2022] Add CI pipeline example for Bitbucket and Github Action.
