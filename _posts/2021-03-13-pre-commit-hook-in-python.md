@@ -82,10 +82,10 @@ repos:
 ![]({{ site.baseurl }}/images/git-push.png "pre-commit hooks executing during push.")
 
 
-### CI পাইপলাইনে প্রি-কমিট হুক চেকিং
+## CI পাইপলাইনে প্রি-কমিট হুক চেকিং
 
 
-#### Bitbucket Pipeline Example
+### Bitbucket Pipeline Example
 Bitbucket পাইপলাইনে মাল্টিপল স্টেপ প্যারালালি রান করা যায়। এর ফলে CI রান করার ওয়েটিং টাইমটা কমিয়ে ফেলা যায়। 
 ```yaml
 image: python:3.8
@@ -124,7 +124,7 @@ pipelines:
 ```
 
 
-#### Github Action Pipeline Example:
+### Github Action Pipeline Example:
 
 ```yaml
 name: Continuous Integration
@@ -164,7 +164,7 @@ jobs:
 ```
 
 
-## Resources:
+## Resources
 
 - [Automate Python workflow using pre-commits: black and flake8](https://ljvmiranda921.github.io/notebook/2018/06/21/precommits-using-black-and-flake8/)
 
@@ -177,6 +177,8 @@ jobs:
 - [pre-commit](https://pre-commit.com/)
 
 - [My unpopular opinion about black code formatter](https://luminousmen.com/post/my-unpopular-opinion-about-black-code-formatter)
+
+- [[Bitbucket] Set up or run parallel steps](https://support.atlassian.com/bitbucket-cloud/docs/set-up-or-run-parallel-steps/)
 
 
 ## UPDATE Log
