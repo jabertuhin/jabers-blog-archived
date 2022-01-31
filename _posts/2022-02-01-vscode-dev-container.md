@@ -3,6 +3,7 @@ layout: post
 title: Developing inside a Container with VSCode
 description: Instead of working on virtual environments, we can now use a docker container to work on our codes.
 comments: false
+image: images/architecture-containers.png
 toc: true
 categories: [Python, VSCode, Docker, English]
 ---
