@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Developing inside a Container with VSCode | Jaber’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Developing inside a Container with VSCode" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Instead of working on virtual environments, we can now use a docker container to work on our codes." />
+<meta property="og:description" content="Instead of working on virtual environments, we can now use a docker container to work on our codes." />
+<link rel="canonical" href="https://jabertuhin.github.io/jabers-blog/python/vscode/docker/english/2022/02/01/vscode-dev-container.html" />
+<meta property="og:url" content="https://jabertuhin.github.io/jabers-blog/python/vscode/docker/english/2022/02/01/vscode-dev-container.html" />
+<meta property="og:site_name" content="Jaber’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-02-01T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://jabertuhin.github.io/jabers-blog/python/vscode/docker/english/2022/02/01/vscode-dev-container.html","@type":"BlogPosting","headline":"Developing inside a Container with VSCode","dateModified":"2022-02-01T00:00:00-06:00","datePublished":"2022-02-01T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://jabertuhin.github.io/jabers-blog/python/vscode/docker/english/2022/02/01/vscode-dev-container.html"},"description":"Instead of working on virtual environments, we can now use a docker container to work on our codes.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/jabers-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://jabertuhin.github.io/jabers-blog/feed.xml" title="Jaber's Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-170132741-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-170132741-2');
+</script>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/jabers-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/jabers-blog/">Jaber&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/jabers-blog/about/">About Me</a><a class="page-link" href="/jabers-blog/search/">Search</a><a class="page-link" href="/jabers-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Developing inside a Container with VSCode</h1><p class="page-description">Instead of working on virtual environments, we can now use a docker container to work on our codes.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-02-01T00:00:00-06:00" itemprop="datePublished">
+        Feb 1, 2022
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      4 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#Python">Python</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#VSCode">VSCode</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#Docker">Docker</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/jabers-blog/categories/#English">English</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#architecture">Architecture</a></li>
+<li class="toc-entry toc-h2"><a href="#installing-extension">Installing Extension</a></li>
+<li class="toc-entry toc-h2"><a href="#create-devcontainer-folder">Create .devcontainer Folder</a></li>
+<li class="toc-entry toc-h2"><a href="#create-dockerfile">Create Dockerfile</a></li>
+<li class="toc-entry toc-h2"><a href="#create-devcontainerjson">Create devcontainer.json</a></li>
+<li class="toc-entry toc-h2"><a href="#preparing-container">Preparing Container</a></li>
+<li class="toc-entry toc-h2"><a href="#git-question">Git Question</a></li>
+<li class="toc-entry toc-h2"><a href="#conclusion">Conclusion</a></li>
+<li class="toc-entry toc-h2"><a href="#reference">Reference</a></li>
+</ul><p>In this blog post, we will try to add a few files in our project folder, to start developing an existing project on the docker container with VSCode. We will be working on one of my python <a href="https://github.com/jabertuhin/dvdrental-backend">pet project</a>.</p>
+
+<p>If you are in a hurry and just want to go through the code, here is the <a href="https://github.com/jabertuhin/dvdrental-backend">github repo</a>. Go through <code class="language-plaintext highlighter-rouge">.devcontainer</code> folder.</p>
+
+<p>Let’s start….</p>
+
+<p><strong>Pre-requisites:</strong> VSCode, Docker.</p>
+
+<h2 id="architecture">
+<a class="anchor" href="#architecture" aria-hidden="true"><span class="octicon octicon-link"></span></a>Architecture</h2>
+
+<p>The architecture of VS Code working with docker container -</p>
+
+<p><img src="/jabers-blog/images/architecture-containers.png" alt="" title="Architecture [Image taken from their documentaion]"></p>
+
+<p>We won’t go into the details here. If you are interested, please read the <a href="https://code.visualstudio.com/docs/remote/containers">documentation</a>.</p>
+
+<h2 id="installing-extension">
+<a class="anchor" href="#installing-extension" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing Extension</h2>
+
+<p>Install <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers">Remote - Containers</a> from extensions marketplace.</p>
+
+<h2 id="create-devcontainer-folder">
+<a class="anchor" href="#create-devcontainer-folder" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create .devcontainer Folder</h2>
+
+<p>In our project, we need to create a <code class="language-plaintext highlighter-rouge">.devcontainer</code> folder. Here, we will keep our configuration files, which will be used to create our container for development purposes.
+This folder and its’ files will tell our recently installed extension to create a docker container and use it for development.</p>
+
+<h2 id="create-dockerfile">
+<a class="anchor" href="#create-dockerfile" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create Dockerfile</h2>
+
+<p>I have modified the <code class="language-plaintext highlighter-rouge">Dockerfile</code> a little bit, according to my need. Except that, this file was copied from <a href="https://github.com/microsoft/vscode-remote-try-python/blob/main/.devcontainer/Dockerfile">vscode-remote-try-python</a>. This definition will be used to create our development container.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ARG <span class="nv">VARIANT</span><span class="o">=</span>3.8-bullseye
+FROM mcr.microsoft.com/vscode/devcontainers/python:0-<span class="k">${</span><span class="nv">VARIANT</span><span class="k">}</span>
+
+<span class="c"># [Optional] Allow the vscode user to pip install globally w/o sudo</span>
+ENV <span class="nv">PIP_TARGET</span><span class="o">=</span>/usr/local/pip-global
+ENV <span class="nv">PYTHONPATH</span><span class="o">=</span><span class="k">${</span><span class="nv">PIP_TARGET</span><span class="k">}</span>:<span class="k">${</span><span class="nv">PYTHONPATH</span><span class="k">}</span>
+ENV <span class="nv">PATH</span><span class="o">=</span><span class="k">${</span><span class="nv">PIP_TARGET</span><span class="k">}</span>/bin:<span class="k">${</span><span class="nv">PATH</span><span class="k">}</span>
+RUN <span class="k">if</span> <span class="o">!</span> <span class="nb">cat</span> /etc/group | <span class="nb">grep</span> <span class="nt">-e</span> <span class="s2">"^pip-global:"</span> <span class="o">&gt;</span> /dev/null 2&gt;&amp;1<span class="p">;</span> <span class="k">then </span>groupadd <span class="nt">-r</span> pip-global<span class="p">;</span> <span class="k">fi</span> <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> usermod <span class="nt">-a</span> <span class="nt">-G</span> pip-global vscode <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">umask </span>0002 <span class="o">&amp;&amp;</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="k">${</span><span class="nv">PIP_TARGET</span><span class="k">}</span> <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">chown</span> :pip-global <span class="k">${</span><span class="nv">PIP_TARGET</span><span class="k">}</span> <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="o">(</span> <span class="o">[</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s2">"/etc/profile.d/00-restore-env.sh"</span> <span class="o">]</span> <span class="o">||</span> <span class="nb">sed</span> <span class="nt">-i</span> <span class="nt">-e</span> <span class="s2">"s/export PATH=/export PATH=</span><span class="se">\/</span><span class="s2">usr</span><span class="se">\/</span><span class="s2">local</span><span class="se">\/</span><span class="s2">pip-global:/"</span> /etc/profile.d/00-restore-env.sh <span class="o">)</span>
+
+<span class="c"># [Choice] Node.js version: none, lts/*, 16, 14, 12, 10</span>
+ARG <span class="nv">NODE_VERSION</span><span class="o">=</span><span class="s2">"none"</span>
+RUN <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="k">${</span><span class="nv">NODE_VERSION</span><span class="k">}</span><span class="s2">"</span> <span class="o">!=</span> <span class="s2">"none"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then </span>su vscode <span class="nt">-c</span> <span class="s2">"umask 0002 &amp;&amp; . /usr/local/share/nvm/nvm.sh &amp;&amp; nvm install </span><span class="k">${</span><span class="nv">NODE_VERSION</span><span class="k">}</span><span class="s2"> 2&gt;&amp;1"</span><span class="p">;</span> <span class="k">fi</span>
+
+<span class="c"># [Optional] If your pip requirements rarely change, uncomment this section to add them to the image.</span>
+COPY requirements.txt /tmp/pip-tmp/
+COPY requirements.dev.txt /tmp/pip-tmp/
+RUN pip3 <span class="nt">--disable-pip-version-check</span> <span class="nt">--no-cache-dir</span> <span class="nb">install</span> <span class="nt">-r</span> /tmp/pip-tmp/requirements.dev.txt <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-rf</span> /tmp/pip-tmp
+</code></pre></div></div>
+
+<h2 id="create-devcontainerjson">
+<a class="anchor" href="#create-devcontainerjson" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create devcontainer.json</h2>
+
+<p>Now, we have our dockerfile to create a container from it. But we might want to pass some build/runtime arguments for our need, we can configure those in this file. We can also add the necessary vscode extension ids that will be needed for our development. And VSCode will take care of all of our configured needs.</p>
+
+<p>There is one thing that I want to add here. I have a locally running PostgreSQL database. I was struggling to connect my application(which is running inside a container) with the local database. Special thanks to <strong>Sadman Amin</strong>, for suggesting me to use <code class="language-plaintext highlighter-rouge">--network=host</code> as an argument, and this resolved the issue.</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+	</span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Python 3"</span><span class="p">,</span><span class="w">
+	</span><span class="nl">"build"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+		</span><span class="nl">"dockerfile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dockerfile"</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"context"</span><span class="p">:</span><span class="w"> </span><span class="s2">".."</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+			</span><span class="nl">"VARIANT"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.8-buster"</span><span class="p">,</span><span class="w">
+			</span><span class="nl">"NODE_VERSION"</span><span class="p">:</span><span class="w"> </span><span class="s2">"lts/*"</span><span class="p">,</span><span class="w">
+		</span><span class="p">}</span><span class="w">
+	</span><span class="p">},</span><span class="w">
+	</span><span class="nl">"runArgs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"--network=host"</span><span class="p">],</span><span class="w">
+
+	</span><span class="err">//</span><span class="w"> </span><span class="err">Set</span><span class="w"> </span><span class="err">*default*</span><span class="w"> </span><span class="err">container</span><span class="w"> </span><span class="err">specific</span><span class="w"> </span><span class="err">settings.json</span><span class="w"> </span><span class="err">values</span><span class="w"> </span><span class="err">on</span><span class="w"> </span><span class="err">container</span><span class="w"> </span><span class="err">create.</span><span class="w">
+	</span><span class="nl">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+		</span><span class="nl">"terminal.integrated.profiles.linux"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+			</span><span class="nl">"bash"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+				</span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/bin/bash"</span><span class="w">
+			</span><span class="p">}</span><span class="w">
+		</span><span class="p">},</span><span class="w">
+		</span><span class="nl">"python.defaultInterpreterPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/local/bin/python"</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"python.languageServer"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Default"</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"python.linting.enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"python.linting.pylintEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"python.formatting.autopep8Path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/local/py-utils/bin/autopep8"</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"python.formatting.blackPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/local/py-utils/bin/black"</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"python.formatting.yapfPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/local/py-utils/bin/yapf"</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"python.linting.banditPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/local/py-utils/bin/bandit"</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"python.linting.flake8Path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/local/py-utils/bin/flake8"</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"python.linting.mypyPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/local/py-utils/bin/mypy"</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"python.linting.pycodestylePath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/local/py-utils/bin/pycodestyle"</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"python.linting.pydocstylePath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/local/py-utils/bin/pydocstyle"</span><span class="p">,</span><span class="w">
+		</span><span class="nl">"python.linting.pylintPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/local/py-utils/bin/pylint"</span><span class="w">
+	</span><span class="p">},</span><span class="w">
+
+	</span><span class="err">//</span><span class="w"> </span><span class="err">Add</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">IDs</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">extensions</span><span class="w"> </span><span class="err">you</span><span class="w"> </span><span class="err">want</span><span class="w"> </span><span class="err">installed</span><span class="w"> </span><span class="err">when</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">container</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">created.</span><span class="w">
+	</span><span class="nl">"extensions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+		</span><span class="s2">"ms-python.python"</span><span class="p">,</span><span class="w">
+		</span><span class="s2">"ms-python.vscode-pylance"</span><span class="w">
+	</span><span class="p">],</span><span class="w">
+
+	</span><span class="err">//</span><span class="w"> </span><span class="err">Use</span><span class="w"> </span><span class="err">'forwardPorts'</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">make</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">list</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">ports</span><span class="w"> </span><span class="err">inside</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">container</span><span class="w"> </span><span class="err">available</span><span class="w"> </span><span class="err">locally.</span><span class="w">
+	</span><span class="nl">"forwardPorts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">8080</span><span class="p">],</span><span class="w">
+
+	</span><span class="err">//</span><span class="w"> </span><span class="err">Use</span><span class="w"> </span><span class="err">'portsAttributes'</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">set</span><span class="w"> </span><span class="err">default</span><span class="w"> </span><span class="err">properties</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">specific</span><span class="w"> </span><span class="err">forwarded</span><span class="w"> </span><span class="err">ports.</span><span class="w"> </span><span class="err">More</span><span class="w"> </span><span class="err">info:</span><span class="w"> </span><span class="err">https://code.visualstudio.com/docs/remote/devcontainerjson-reference.</span><span class="w">
+	</span><span class="nl">"portsAttributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+		</span><span class="nl">"8080"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+			</span><span class="nl">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DVD Rental"</span><span class="p">,</span><span class="w">
+			</span><span class="nl">"onAutoForward"</span><span class="p">:</span><span class="w"> </span><span class="s2">"notify"</span><span class="w">
+		</span><span class="p">}</span><span class="w">
+	</span><span class="p">},</span><span class="w">
+
+	</span><span class="err">//</span><span class="w"> </span><span class="err">Comment</span><span class="w"> </span><span class="err">out</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">connect</span><span class="w"> </span><span class="err">as</span><span class="w"> </span><span class="err">root</span><span class="w"> </span><span class="err">instead.</span><span class="w"> </span><span class="err">More</span><span class="w"> </span><span class="err">info:</span><span class="w"> </span><span class="err">https://aka.ms/vscode-remote/containers/non-root.</span><span class="w">
+	</span><span class="nl">"remoteUser"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vscode"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>There are other available properties of this JSON file that we can add, <a href="https://code.visualstudio.com/docs/remote/devcontainerjson-reference">for more info</a>.</p>
+
+<h2 id="preparing-container">
+<a class="anchor" href="#preparing-container" aria-hidden="true"><span class="octicon octicon-link"></span></a>Preparing Container</h2>
+
+<p>We are done with our preparation, now we can tell VSCode to do its magic:</p>
+
+<ul>
+  <li>Press <kbd>F1</kbd> and select the <strong>Remote-Containers: Open Folder in Container…</strong> command.</li>
+  <li>Selecting the project folder will trigger the container to build and start.</li>
+</ul>
+
+<h2 id="git-question">
+<a class="anchor" href="#git-question" aria-hidden="true"><span class="octicon octicon-link"></span></a>Git Question</h2>
+
+<p>In the beginning, I wasn’t sure about the git configurations. How one might commit/push from a container.  Then I found my answer here <a href="https://code.visualstudio.com/docs/remote/containers#_working-with-git">Working with Git?</a>.</p>
+
+<h2 id="conclusion">
+<a class="anchor" href="#conclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusion</h2>
+
+<p>The experience was quite good for me, and I enjoyed working on this. In my opinion, this will help team members to not worry about setting up the development environment on their workstation.
+In a project, different team members use different OS on their workstations. Sometimes it becomes difficult to work with identical system configurations. This container based development might minimize such difficulties.</p>
+
+<p>Finally, to get started with, I will suggest to clone and run <a href="https://github.com/microsoft/vscode-remote-try-python">vscode-remote-try-python</a>.</p>
+
+<h2 id="reference">
+<a class="anchor" href="#reference" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reference</h2>
+<ul>
+  <li>
+    <p><a href="https://techcommunity.microsoft.com/t5/educator-developer-blog/using-visual-studio-code-from-a-docker-image-locally-or-remotely/ba-p/1264988">Using Visual Studio Code from a docker image locally or remotely via VS Online</a></p>
+  </li>
+  <li>
+    <p><a href="https://github.com/microsoft/vscode-dev-containers">VS Code Remote / GitHub Codespaces Container Definitions</a></p>
+  </li>
+</ul>
+
+  </div><a class="u-url" href="/jabers-blog/python/vscode/docker/english/2022/02/01/vscode-dev-container.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jabers-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/jabers-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/jabers-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>ML Enthusiast</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/jabertuhin" target="_blank" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/mir-mohammad-jaber" target="_blank" title="mir-mohammad-jaber"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/jabertuhin" target="_blank" title="jabertuhin"><svg class="svg-icon grey"><use xlink:href="/jabers-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
