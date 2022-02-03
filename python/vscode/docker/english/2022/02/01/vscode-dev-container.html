@@ -109,7 +109,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      4 min read
+      3 min read
     
 </span></p>
 
@@ -179,16 +179,6 @@ This folder and its’ files will tell our recently installed extension to creat
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ARG <span class="nv">VARIANT</span><span class="o">=</span>3.8-bullseye
 FROM mcr.microsoft.com/vscode/devcontainers/python:0-<span class="k">${</span><span class="nv">VARIANT</span><span class="k">}</span>
-
-<span class="c"># [Optional] Allow the vscode user to pip install globally w/o sudo</span>
-ENV <span class="nv">PIP_TARGET</span><span class="o">=</span>/usr/local/pip-global
-ENV <span class="nv">PYTHONPATH</span><span class="o">=</span><span class="k">${</span><span class="nv">PIP_TARGET</span><span class="k">}</span>:<span class="k">${</span><span class="nv">PYTHONPATH</span><span class="k">}</span>
-ENV <span class="nv">PATH</span><span class="o">=</span><span class="k">${</span><span class="nv">PIP_TARGET</span><span class="k">}</span>/bin:<span class="k">${</span><span class="nv">PATH</span><span class="k">}</span>
-RUN <span class="k">if</span> <span class="o">!</span> <span class="nb">cat</span> /etc/group | <span class="nb">grep</span> <span class="nt">-e</span> <span class="s2">"^pip-global:"</span> <span class="o">&gt;</span> /dev/null 2&gt;&amp;1<span class="p">;</span> <span class="k">then </span>groupadd <span class="nt">-r</span> pip-global<span class="p">;</span> <span class="k">fi</span> <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> usermod <span class="nt">-a</span> <span class="nt">-G</span> pip-global vscode <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">umask </span>0002 <span class="o">&amp;&amp;</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="k">${</span><span class="nv">PIP_TARGET</span><span class="k">}</span> <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">chown</span> :pip-global <span class="k">${</span><span class="nv">PIP_TARGET</span><span class="k">}</span> <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="o">(</span> <span class="o">[</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s2">"/etc/profile.d/00-restore-env.sh"</span> <span class="o">]</span> <span class="o">||</span> <span class="nb">sed</span> <span class="nt">-i</span> <span class="nt">-e</span> <span class="s2">"s/export PATH=/export PATH=</span><span class="se">\/</span><span class="s2">usr</span><span class="se">\/</span><span class="s2">local</span><span class="se">\/</span><span class="s2">pip-global:/"</span> /etc/profile.d/00-restore-env.sh <span class="o">)</span>
 
 <span class="c"># [Choice] Node.js version: none, lts/*, 16, 14, 12, 10</span>
 ARG <span class="nv">NODE_VERSION</span><span class="o">=</span><span class="s2">"none"</span>
